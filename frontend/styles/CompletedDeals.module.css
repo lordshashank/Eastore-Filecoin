@@ -1,0 +1,57 @@
+.deals_data {
+  color: #fff;
+}
+.deals_data h2 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+.all_deals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+.all_deals > h1 {
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+.deals_wraper {
+  flex: 1;
+  padding: 1rem;
+  background: linear-gradient(#0b1534, #0b1534) padding-box,
+    linear-gradient(180deg, #355fb2, #401c8f) border-box;
+  border: 2px solid transparent;
+}
+.deals {
+  padding: 1rem;
+  width: 100%;
+  z-index: 10;
+  padding: 1rem;
+  background-color: #f7f7fc;
+  border: 2px solid transparent;
+}
+
+.button {
+  background-color: #355fb2;
+  padding: 0.5vmax 1vmax 0.5vmax 1vmax;
+  color: #fff;
+  margin-top: 1rem;
+  border-radius: 90px;
+}
+.details {
+  display: flex;
+  gap: 1rem;
+  color: #101828;
+}
+.details p {
+  font-weight: 400;
+  font-size: 16px;
+}
+.values {
+  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
