@@ -1,0 +1,38 @@
+[
+  {
+    "Price": "30",
+    "VerifiedPrice": "0",
+    "MinPieceSize": 256,
+    "MaxPieceSize": 536870912,
+    "Miner": "f01129",
+    "Timestamp": 9720,
+    "Expiry": 96120,
+    "SeqNo": 1,
+    "PeerId": "12D3KooWRUeeh76B16pi54wr8RZQAZv9wVbRiJFGVfLNnzwxCbkr",
+    "SectorSize": 536870912
+  },
+  {
+    "Price": "15",
+    "VerifiedPrice": "0",
+    "MinPieceSize": 256,
+    "MaxPieceSize": 34359738368,
+    "Miner": "f01130",
+    "Timestamp": 9797,
+    "Expiry": 96197,
+    "SeqNo": 1,
+    "PeerId": "12D3KooWHh1mUwb827kFC27zvmvKc13XtKRFRDQgAkHBecn6anx9",
+    "SectorSize": 34359738368
+  },
+  {
+    "Price": "20",
+    "VerifiedPrice": "0",
+    "MinPieceSize": 1024,
+    "MaxPieceSize": 536870912,
+    "Miner": "f01036",
+    "Timestamp": 1739,
+    "Expiry": 88139,
+    "SeqNo": 2,
+    "PeerId": "12D3KooWNyUx7RumP2QFRMuw8yAz6VnSsMB3bG7CCm8jWiJiAfnz",
+    "SectorSize": 536870912
+  }
+]

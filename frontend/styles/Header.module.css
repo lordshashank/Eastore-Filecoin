@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 2rem;
+  background: #0a103b;
+  z-index: 10;
+  border-bottom: 1px solid #e3e7ef;
+}
+.logo {
+  width: 80px;
+  height: 80px;
+}
+.logo-image {
+  width: 80px;
+  height: 80px;
+}
+.links {
+  display: flex;
+  gap: 2rem;
+}
+.link {
+  text-decoration: none;
+  color: #97a3b7;
+}
+.link.active {
+  color: #ffffff;
+}
+.profile-icon {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
+@media (width <= 500px) {
+  .links {
+    gap: 0.7rem;
+  }
+  .header {
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+  }
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
