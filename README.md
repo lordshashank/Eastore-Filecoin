@@ -26,7 +26,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/lordshashank/Eastore">
-    <img src="./frontend/public/logo.png" alt="Logo" width="80" height="80">
+    <img src="./frontend/public/logo.png" alt="Logo" width="200" height="80">
   </a>
 
 <h3 align="center">project_title</h3>
@@ -130,7 +130,7 @@ Then you have to get authentication token which you have to put in .env file in 
    ```
 8. You can now view the project at `http://localhost:3000`
 
-Also we have made a directory for smart contracts deployed by us using FEVM hardhat kit at [https://docs.filecoin.io/developers/smart-contracts/hardhat/]. we just have added one contract in it which is [https://github.com/lordshashank/Eastore/contracts/contracts/cashback.sol] which is used to give cashback to the users who have bought full sectors on FVM.
+Also we have made a directory for smart contracts deployed by us using FEVM hardhat kit at [https://docs.filecoin.io/developers/smart-contracts/hardhat/]. we just have added one contract in it which is [https://github.com/lordshashank/Eastore/blob/master/contracts/contracts/cashback.sol] which is used to give cashback to the users who have bought full sectors on FVM.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
