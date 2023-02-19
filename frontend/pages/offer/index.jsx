@@ -86,23 +86,10 @@ const Offer = () => {
           <h1>Full Sector Bounties</h1>
           <div className={classes.upper_list}>
             {filters.map((data, index) => {
-              if (index == "1") {
+              const MaxPieceSizeInMB = data.MaxPieceSize / (1024 * 1024);
+              if (MaxPieceSizeInMB === 32768 || MaxPieceSizeInMB === 65536) {
                 return (
                   <MiddleCard
-                    key={index}
-                    className={classes.middle_card}
-                    heading={`${data.MaxPieceSize / (1024 * 1024)} MB`}
-                    percent={"0.2 tFil"}
-                    text={data.Miner}
-                    onOpenBuy={() => {
-                      setModalData(data);
-                      openShowBuy();
-                    }}
-                  />
-                );
-              } else {
-                return (
-                  <Card
                     key={index}
                     className={classes.card}
                     heading={`${data.MaxPieceSize / (1024 * 1024)} MB`}
@@ -114,43 +101,7 @@ const Offer = () => {
                     }}
                   />
                 );
-              }
-            })}
-          </div>
-          <div className={classes.lower_list}>
-            {filters.map((data, index) => {
-              if (index == "1") {
-                return (
-                  <MiddleCard
-                    key={index}
-                    className={classes.middle_card}
-                    heading={`${data.MaxPieceSize / (1024 * 1024)} MB`}
-                    percent={"0.2 tFil"}
-                    text={data.Miner}
-                    onOpenBuy={() => {
-                      setModalData(data);
-                      openShowBuy();
-                    }}
-                  />
-                );
               } else {
-                return (
-                  <Card
-                    key={index}
-                    className={classes.card}
-                    heading={`${data.MaxPieceSize / (1024 * 1024)} MB`}
-                    percent={"0.2 tFil"}
-                    text={data.Miner}
-                    onOpenBuy={() => {
-                      setModalData(data);
-                      openShowBuy();
-                    }}
-                  />
-                );
-              }
-            })}
-            {filters.map((data, index) => {
-              if (index == "0") {
                 return (
                   <Card
                     key={index}
