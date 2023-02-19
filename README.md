@@ -138,11 +138,16 @@ Also we have made a directory for smart contracts deployed by us using FEVM hard
 
 ## Usage
 
-We didn't find any storage marketplace for newly made hyperspace network, and user had to interact with lotus CLI to get a nominal deal-id to work on. Thus, we tended to solve this problem.
-This was just beginning, we then realised that file storage system is quite unorganised in FVM, thus started thinking of ideas to make it easy and profitable for both users and miners. First, we built a minimal storage interaction system that interacts with FVM storage providers to store and retrieve user data easily. We created an interactive frontend to give users a smooth experience of storing and retrieving there data.
-It is difficult for the users to find just the right deal on filecoin ecosystem. There are issues related to storage size or lifetime or storage and many more. `Eastore` helps you get the deals as per your requirement through the extensive filters our site provides. It also helps you get great rewards for your deals.
-Then, we thought that all users might not have FIL tokens to work with. Thus we integrated many chains into our dapp, now, user can pay in with eth, avax, etc in to get a deal on the filecoin network. This reduces customer's friction and increases market manifolds. Although, we provided additional benefits for users using the FIL token so as to incentivize people to join the network.
-Afterwards, we came to know about sectors in FVM. We understood that completely filled sectors were quite beneficial for storage providers and the filecoin network. Sectors being sealed by filling trash data fills trash in filecoin network and is also space wastage for storage providers. Thus, we introduced discount features in deals. If users completely fill the sector with their data, they will be provided cashback of certain amount. This way network's utility can be pivoted.
+We didn't find any storage marketplace for newly made hyperspace network, and user had to interact with lotus CLI to get a nominal deal-id to work on. Thus, we tended to solve this problem. <br/>
+
+This was just beginning, we then realised that file storage system is quite unorganised in FVM, thus started thinking of ideas to make it easy and profitable for both users and miners. First, we built a minimal storage interaction system that interacts with FVM storage providers to store and retrieve user data easily. We created an interactive frontend to give users a smooth experience of storing and retrieving there data. <br/>
+
+It is difficult for the users to find just the right deal on filecoin ecosystem. There are issues related to storage size or lifetime or storage and many more. `Eastore` helps you get the deals as per your requirement through the extensive filters our site provides. It also helps you get great rewards for your deals. <br/>
+
+Then, we thought that all users might not have FIL tokens to work with. Thus we integrated many chains into our dapp, now, user can pay in with eth, avax, etc in to get a deal on the filecoin network. This reduces customer's friction and increases market manifolds. Although, we provided additional benefits for users using the FIL token so as to incentivize people to join the network. <br/>
+
+Afterwards, we came to know about sectors in FVM. We understood that completely filled sectors were quite beneficial for storage providers and the filecoin network. Sectors being sealed by filling trash data fills trash in filecoin network and is also space wastage for storage providers. Thus, we introduced discount features in deals. If users completely fill the sector with their data, they will be provided cashback of certain amount. This way network's utility can be pivoted. <br/>
+
 Moreover, in future we aim to include feature where users can put there files along with other users until the total aggregate fills the complete sector, and then the deal is published on chain. We also aim to put off-chain miner interactions in our dapp.
 
 For more examples, please refer to the [Documentation](https://devfolio.co/projects/eastore-e336)
