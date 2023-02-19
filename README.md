@@ -29,12 +29,12 @@
     <img src="./frontend/public/logo.png" alt="Logo" width="200" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Eastore</h3>
 
   <p align="center">
-    project_description
+   Easing your Filecoin storages
     <br />
-    <a href="https://github.com/lordshashank/Eastore"><strong>Explore the Prject »</strong></a>
+    <a href="https://devfolio.co/projects/eastore-e336"><strong>Explore the Prject »</strong></a>
     <br />
     <br />
     <!-- to edit -->
@@ -140,7 +140,7 @@ Also we have made a directory for smart contracts deployed by us using FEVM hard
 
 It is difficult for the users to find just the right deal on filecoin ecosystem. There are issues related to storage size or lifetime or storage and many more. `Eastore` helps you get the deals as per your requirement through the extensive filters our site provides. It also helps you get great rewards for your deals.
 
-For more examples, please refer to the [Documentation](https://github.com/lordshashank/Eastore)
+For more examples, please refer to the [Documentation](https://devfolio.co/projects/eastore-e336)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
