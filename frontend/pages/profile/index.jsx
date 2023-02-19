@@ -69,7 +69,7 @@ function Profile({ data }) {
         Account: <span className={classes.userAccount}>{userAccount}</span>
       </h4>
       <h4>
-        FIL BALANCE:{" "}
+        BALANCE:{" "}
         <span>
           {getPrice(userAccount, chainId)}
           {""}
