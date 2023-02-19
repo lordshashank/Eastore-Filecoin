@@ -6,24 +6,17 @@ const express = require("express");
 const { LotusRPC } = require("@filecoin-shipyard/lotus-client-rpc");
 const { mainnet } = require("@filecoin-shipyard/lotus-client-schema");
 const fs = require("fs");
+const { emptyDirSync } = require("fs-extra");
+
 const {
   NodejsProvider,
 } = require("@filecoin-shipyard/lotus-client-provider-nodejs");
-// import { mainnet } from "https://unpkg.com/@filecoin-shipyard/lotus-client-schema?module";
-// import { BrowserProvider } from "https://unpkg.com/@filecoin-shipyard/lotus-client-provider-browser?module";
-// import { LotusRPC } from "https://unpkg.com/@filecoin-shipyard/lotus-client-rpc?module";
+require("dotenv").config();
 const endpointUrl = "http://127.0.0.1:1234/rpc/v0";
-// const endpointUrl = "wss://lotus.testground.ipfs.team/api/0/node/rpc/v0";
+const LOTUS_TOKEN = process.env.LOTUS_TOKEN;
 const provider = new NodejsProvider(endpointUrl, {
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.hCv2GfO_kHoLLB2CjNgcBJ0HQUCSSqU81Cj-qC1U79k",
+  token: LOTUS_TOKEN,
 });
-let random = 0;
-// const provider = new NodejsProvider(endpointUrl);
-// const provider = new BrowserProvider(endpointUrl, {
-//   token:
-//     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.hCv2GfO_kHoLLB2CjNgcBJ0HQUCSSqU81Cj-qC1U79k",
-// });
 const client = new LotusRPC(provider, { schema: mainnet.fullNode });
 async function main(pieceData) {
   //   client = new LotusRPC(provider, { schema: mainnet.fullNode });
@@ -48,6 +41,7 @@ async function main(pieceData) {
 }
 
 async function retrieveData(pieceData) {
+  emptyDirSync(`/${__dirname}/../Retrievals`);
   const retrievalOrder = {
     Root: pieceData.root,
     Piece: pieceData.pieceCid,
@@ -64,9 +58,8 @@ async function retrieveData(pieceData) {
       PieceCID: pieceData.pieceCid,
     },
   };
-  random = random + 1;
   const fileRef = {
-    Path: `/home/lordforever/blockchain/kuch-bhi/web3.1/Retrievals/${random}`,
+    Path: `/${__dirname}/../Retrievals/download`,
     IsCAR: false,
   };
   const getData = await client.clientRetrieve(retrievalOrder, fileRef);
@@ -89,7 +82,7 @@ router.post("/retrieveDeal", async (req, res) => {
   // const jsonResult = JSON.stringify(result);
   // res.json(result);
   // console.log(data.fileName);
-  const file = `/${__dirname}/../Retrievals/${random}`;
+  const file = `/${__dirname}/../Retrievals/download`;
   res.download(file);
   // fs.unlinkSync(file);
   //   main().then((result) => {

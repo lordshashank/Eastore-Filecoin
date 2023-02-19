@@ -4,7 +4,7 @@ const HomeContent = () => {
   return (
     <div className={classes["home-content"]}>
       <div className={classes.content}>
-        <h1 className={classes.heading}>StorEasy</h1>
+        <h1 className={classes.heading}>Eastore</h1>
         <p>
           A decentralized storage marketplace and full-sector bounty rewarder
           built over Filecoin Virtual Machine. Bringing simplified data storage

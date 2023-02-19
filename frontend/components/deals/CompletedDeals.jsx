@@ -69,58 +69,6 @@ const CompletedDeals = ({ data }) => {
               </div>
             ))
           : null}
-        <div className={classes.deals_wraper}>
-          <div className={classes.deals}>
-            <div className={classes.details}>
-              <div>
-                <p>Filename:</p>
-                <p>Root:</p>
-                <p>PieceCID:</p>
-                <p>Piece Size:</p>
-              </div>
-              <div className={classes.values}>
-                <p>jfuernfefikfpaennfijdfjr</p>
-                <p>helsomuyselfpuspendra</p>
-                <p>heloothisisyourdata</p>
-                <p>hellothisisyouranotherdad</p>
-              </div>
-            </div>
-            <button
-              className={classes.button}
-              onClick={() => {
-                handleDownload(data);
-              }}
-            >
-              Download
-            </button>
-          </div>
-        </div>
-        <div className={classes.deals_wraper}>
-          <div className={classes.deals}>
-            <div className={classes.details}>
-              <div>
-                <p>Filename:</p>
-                <p>Root:</p>
-                <p>PieceCID:</p>
-                <p>Piece Size:</p>
-              </div>
-              <div className={classes.values}>
-                <p>jfuernfefikfpaennfijdfjr</p>
-                <p>helsomuyselfpuspendra</p>
-                <p>heloothisisyourdata</p>
-                <p>hellothisisyouranotherdad</p>
-              </div>
-            </div>
-            <button
-              className={classes.button}
-              onClick={() => {
-                handleDownload(data);
-              }}
-            >
-              Download
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

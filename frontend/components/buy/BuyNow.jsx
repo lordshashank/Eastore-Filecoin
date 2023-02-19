@@ -7,7 +7,6 @@ import { IoMdCloudUpload } from "react-icons/io";
 import useWeb3 from "./useWeb3";
 const BuyNow = (props) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isPerpetualLoading, setIsPerpetualLoading] = useState(false);
   const modalData = props.modalData;
   const fileInput = useRef();
   const [isUploaded, setIsUploaded] = useState(false);
@@ -109,48 +108,7 @@ const BuyNow = (props) => {
       console.error(error);
     }
   };
-  const perpetualBuy = async () => {
-    setIsPerpetualLoading(true);
-    try {
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-      }
-      const response = await fetch("http://localhost:3001/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const resData = await response.json();
-      console.log(resData);
-      if (response.status == 200) {
-        setIsUploaded(true);
-        setFiles([]);
-      } else {
-        setIsUploaded(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
 
-    try {
-      let filesName = [];
-      for (let i = 0; i < files.length; i++) {
-        filesName.push(files[i].name);
-      }
-      const response = await fetch("http://localhost:3001/buyPerpetualDeal", {
-        method: "POST",
-        body: JSON.stringify({ filesName: filesName, miner: modalData.Miner }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const resData = await response.json();
-      console.log(resData);
-    } catch (error) {
-      console.error(error);
-    }
-    setIsPerpetualLoading(false);
-  };
   useEffect(() => {
     if (isUploaded) {
       setTimeout(() => {
@@ -298,21 +256,6 @@ const BuyNow = (props) => {
           </div>
 
           <div className={classes["buy-button-box"]}>
-            <button
-              className={classes["buy-button"]}
-              onClick={(e) => {
-                e.preventDefault();
-                if (isPerpetualLoading || isLoading) return;
-
-                perpetualBuy();
-              }}
-            >
-              {!isPerpetualLoading ? (
-                <span>Perpetual BUY</span>
-              ) : (
-                <div className="spinner"></div>
-              )}
-            </button>
             <button
               className={classes["buy-button"]}
               onClick={async (e) => {

@@ -10,14 +10,11 @@ const {
   NodejsProvider,
 } = require("@filecoin-shipyard/lotus-client-provider-nodejs");
 
-// import { mainnet } from "https://unpkg.com/@filecoin-shipyard/lotus-client-schema?module";
-// import { BrowserProvider } from "https://unpkg.com/@filecoin-shipyard/lotus-client-provider-browser?module";
-// import { LotusRPC } from "https://unpkg.com/@filecoin-shipyard/lotus-client-rpc?module";
+require("dotenv").config();
 const endpointUrl = "http://127.0.0.1:1234/rpc/v0";
-// const endpointUrl = "wss://lotus.testground.ipfs.team/api/0/node/rpc/v0";
+const LOTUS_TOKEN = process.env.LOTUS_TOKEN;
 const provider = new NodejsProvider(endpointUrl, {
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.hCv2GfO_kHoLLB2CjNgcBJ0HQUCSSqU81Cj-qC1U79k",
+  token: LOTUS_TOKEN,
 });
 
 // const provider = new NodejsProvider(endpointUrl);

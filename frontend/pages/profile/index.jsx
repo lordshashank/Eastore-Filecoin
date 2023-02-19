@@ -89,7 +89,7 @@ function Profile({ data }) {
             <Image src={profile} alt="" />
           </div>
           <div className={classes.name_btn}>
-            <h1>Bandicoot Valor</h1>
+            <h1>Hyper Lord</h1>
           </div>
           <div className={classes.assets}>
             {account ? accountInfo : <h3>Connect to Wallet to See Details</h3>}

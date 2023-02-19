@@ -11,18 +11,17 @@ const {
   readFileSync,
   writeFileSync,
 } = require("fs");
+require("dotenv").config();
+const { emptyDirSync } = require("fs-extra");
 const {
   NodejsProvider,
 } = require("@filecoin-shipyard/lotus-client-provider-nodejs");
 const { json } = require("stream/consumers");
-// import { mainnet } from "https://unpkg.com/@filecoin-shipyard/lotus-client-schema?module";
-// import { BrowserProvider } from "https://unpkg.com/@filecoin-shipyard/lotus-client-provider-browser?module";
-// import { LotusRPC } from "https://unpkg.com/@filecoin-shipyard/lotus-client-rpc?module";
+require("dotenv").config();
 const endpointUrl = "http://127.0.0.1:1234/rpc/v0";
-// const endpointUrl = "wss://lotus.testground.ipfs.team/api/0/node/rpc/v0";
+const LOTUS_TOKEN = process.env.LOTUS_TOKEN;
 const provider = new NodejsProvider(endpointUrl, {
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.hCv2GfO_kHoLLB2CjNgcBJ0HQUCSSqU81Cj-qC1U79k",
+  token: LOTUS_TOKEN,
 });
 
 // const provider = new NodejsProvider(endpointUrl);
@@ -41,6 +40,8 @@ async function main(fileNameMiner) {
     // await getFileCID();
     // await authNew();
     // await getPieceCid();
+    emptyDirSync(`/${__dirname}/../uploadsCar`);
+    emptyDirSync(`/${__dirname}/../uploads`);
     console.log("running");
     console.log(fileNameMiner);
     const fileName = fileNameMiner.filesName;
@@ -72,7 +73,7 @@ async function makeDeal(pieceData) {
     EpochPrice: "0",
     MinBlocksDuration: 550000,
     ProviderCollateral: "0",
-    DealStartEpoch: 70630,
+    DealStartEpoch: 100630,
     FastRetrieval: false,
     VerifiedDeal: false,
   };
@@ -81,8 +82,8 @@ async function makeDeal(pieceData) {
   return JSON.stringify(head);
 }
 async function checkPrice(fileName) {
-  uploadedFile = `/home/lordforever/blockchain/kuch-bhi/web3.1/uploads/${fileName}`;
-  carFile = `/home/lordforever/blockchain/kuch-bhi/web3.1/uploadsCar/${fileName}.car`;
+  uploadedFile = `/${__dirname}/../uploads/${fileName}`;
+  carFile = `/${__dirname}/../uploadsCar/${fileName}.car`;
   const fileCid = await client.clientImport({
     Path: uploadedFile,
     IsCAR: false,
