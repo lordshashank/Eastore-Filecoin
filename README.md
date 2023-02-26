@@ -25,16 +25,17 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
+<h3> ETHForALL Winning Project </h3>
   <a href="https://github.com/lordshashank/Eastore">
     <img src="./frontend/public/logo.png" alt="Logo" width="200" height="80">
   </a>
 
-<h3 align="center">Eastore</h3>
+<h2 align="center">Eastore</h2>
 
   <p align="center">
    Easing your Filecoin storages
     <br />
-    <a href="https://devfolio.co/projects/eastore-e336"><strong>Explore the Prject »</strong></a>
+    <a href="https://devfolio.co/projects/eastore-e336"><strong>Explore the Project »</strong></a>
     <br />
     <br />
     <!-- to edit -->
