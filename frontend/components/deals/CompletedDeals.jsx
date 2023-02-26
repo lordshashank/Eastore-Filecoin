@@ -39,36 +39,38 @@ const CompletedDeals = ({ data }) => {
     <div className={classes.deals_data}>
       <h2>COMPLETED DEALS</h2>
       <div className={classes.all_deals}>
-        {jsonData.length > 0
-          ? jsonData.map((data, index) => (
-              <div className={classes.deals_wraper}>
-                <div key={index} className={classes.deals}>
-                  <div className={classes.details}>
-                    <div>
-                      <p>Filename:</p>
-                      <p>Root:</p>
-                      <p>PieceCID:</p>
-                      <p>Piece Size:</p>
-                    </div>
-                    <div className={classes.values}>
-                      <p>{data.fileName}</p>
-                      <p>{data.root["/"]}</p>
-                      <p>{data.pieceCid["/"]}</p>
-                      <p>{data.pieceSize}</p>
-                    </div>
+        {jsonData.length > 0 ? (
+          jsonData.map((data, index) => (
+            <div className={classes.deals_wraper}>
+              <div key={index} className={classes.deals}>
+                <div className={classes.details}>
+                  <div>
+                    <p>Filename:</p>
+                    <p>Root:</p>
+                    <p>PieceCID:</p>
+                    <p>Piece Size:</p>
                   </div>
-                  <button
-                    className={classes.button}
-                    onClick={() => {
-                      handleDownload(data);
-                    }}
-                  >
-                    Download
-                  </button>
+                  <div className={classes.values}>
+                    <p>{data.fileName}</p>
+                    <p>{data.root["/"]}</p>
+                    <p>{data.pieceCid["/"]}</p>
+                    <p>{data.pieceSize}</p>
+                  </div>
                 </div>
+                <button
+                  className={classes.button}
+                  onClick={() => {
+                    handleDownload(data);
+                  }}
+                >
+                  Download
+                </button>
               </div>
-            ))
-          : null}
+            </div>
+          ))
+        ) : (
+          <h3>No Deals</h3>
+        )}
       </div>
     </div>
   );
