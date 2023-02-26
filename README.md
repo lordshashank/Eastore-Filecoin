@@ -25,7 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3> <u>ETHForAL Winning Project\n </u></h3>
+<h3> <u>ETHForALL Winning Project<br> </u></h3>
   <a href="https://github.com/lordshashank/Eastore">
     <img src="./frontend/public/logo.png" alt="Logo" width="200" height="80">
   </a>
