@@ -7,7 +7,7 @@ const Pkey = `0x${PK}`;
 const signer = new ethers.Wallet(Pkey);
 const express = require("express");
 
-const sendNotification = async (address) => {
+const sendNotification = async (address) =>  {
   try {
     const apiResponse = await PushAPI.payloads.sendNotification({
       signer,
