@@ -5,15 +5,27 @@ import ManualHeader from "../header/ManualHeader";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoMdCloudUpload } from "react-icons/io";
 import useWeb3 from "./useWeb3";
+import contract from "../../contracts/DealClient.json";
+import { useWeb3Contract } from "react-moralis";
+
+const CID = require("cids");
+const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
+const contractABI = contract.abi;
+let cid;
+let dealParams;
 const BuyNow = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const modalData = props.modalData;
   const fileInput = useRef();
   const [isUploaded, setIsUploaded] = useState(false);
   const [drag, setDrag] = useState(false);
+  const [dealID, setDealID] = useState("");
+
   const [files, setFiles] = useState([]);
   const { chainId, userAccount, Moralis } = useWeb3();
 
+  const { runContractFunction: makeDealProposal } = useWeb3Contract({});
+  const { runContractFunction: pieceDeals } = useWeb3Contract({});
   const Transfer = async () => {
     const options = {
       type: "native",
@@ -65,11 +77,11 @@ const BuyNow = (props) => {
     });
   }
   const handleSubmit = async () => {
-    try {
-      await Transfer();
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await Transfer();
+    // } catch (error) {
+    //   console.log(error);
+    // }
     try {
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -103,12 +115,103 @@ const BuyNow = (props) => {
         },
       });
       const resData = await response.json();
+      dealParams = resData;
+
       console.log(resData);
     } catch (error) {
       console.error(error);
     }
-  };
+    try {
+      const commP = dealParams.pieceCid["/"];
+      console.log(commP);
+      cid = new CID(commP);
 
+      const extraParamsV1 = [
+        dealParams.carLink,
+        dealParams.carSize, //carSize,
+        false, // taskArgs.skipIpniAnnounce,
+        false, // taskArgs.removeUnsealedCopy
+      ];
+      const DealRequestStruct = [
+        cid.bytes, //cidHex
+        dealParams.pieceSize, //taskArgs.pieceSize,
+        false, //taskArgs.verifiedDeal,
+        commP, //taskArgs.label,
+        // 520000, // startEpoch
+        520000, // startEpoch
+        1555200, // endEpoch
+        0, // taskArgs.storagePricePerEpoch,
+        0, // taskArgs.providerCollateral,
+        0, // taskArgs.clientCollateral,
+        1, //taskArgs.extraParamsVersion,
+        extraParamsV1,
+      ];
+      console.log(DealRequestStruct);
+      const parameters = {
+        abi: contractABI,
+        contractAddress: contractAddress,
+        functionName: "makeDealProposal",
+        params: { deal: DealRequestStruct },
+      };
+      const result = await makeDealProposal({
+        params: parameters,
+        onSuccess: () => {
+          console.log("success");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const dealIDButton = () => {
+    return <button onClick={dealIDHandler}>Get deal ID</button>;
+  };
+  const dealIDHandler = async () => {
+    // cid = new CID(
+    //   "baga6ea4seaqcjwtmhku7gbmbqgab3wo74ehsutypdx6wgtm4co7xduf54d2acli"
+    // );
+
+    console.log(cid.bytes);
+    // return;
+    setDealID("Waiting for acceptance by SP...");
+    // cid = new CID(commP);
+    var refresh = setInterval(async () => {
+      console.log(cid.bytes);
+      if (cid === undefined) {
+        setDealID("Error: CID not found");
+        clearInterval(refresh);
+      }
+      console.log("Checking for deal ID...");
+      // const dealID = await dealClient.pieceDeals(cid.bytes);
+      const parameters = {
+        abi: contractABI,
+        contractAddress: contractAddress,
+        functionName: "pieceDeals",
+        params: { "": cid.bytes },
+      };
+      const result = await pieceDeals({
+        params: parameters,
+        onSuccess: () => {
+          console.log("success");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+      console.log(result);
+      console.log(dealID);
+      if (dealID !== undefined && dealID !== "0") {
+        // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
+        // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
+        setDealID("https://hyperspace.filfox.info/en/deal/" + dealID);
+        clearInterval(refresh);
+      }
+    }, 5000);
+  };
   useEffect(() => {
     if (isUploaded) {
       setTimeout(() => {
@@ -279,6 +382,7 @@ const BuyNow = (props) => {
                 <div className="spinner"></div>
               )}
             </button>
+            {dealIDButton()}
           </div>
         </div>
       </div>

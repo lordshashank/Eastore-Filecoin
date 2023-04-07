@@ -10,18 +10,23 @@ const {
   unlinkSync,
   readFileSync,
   writeFileSync,
+  statSync,
 } = require("fs");
-require("dotenv").config();
-const { emptyDirSync } = require("fs-extra");
 const {
   NodejsProvider,
 } = require("@filecoin-shipyard/lotus-client-provider-nodejs");
 const { json } = require("stream/consumers");
 require("dotenv").config();
+const lighthouse = require("@lighthouse-web3/sdk");
+const LIGHTHOUSE_API_KEY = process.env.LIGHTHOUSE_API_KEY;
+// import { mainnet } from "https://unpkg.com/@filecoin-shipyard/lotus-client-schema?module";
+// import { BrowserProvider } from "https://unpkg.com/@filecoin-shipyard/lotus-client-provider-browser?module";
+// import { LotusRPC } from "https://unpkg.com/@filecoin-shipyard/lotus-client-rpc?module";
 const endpointUrl = "http://127.0.0.1:1234/rpc/v0";
-const LOTUS_TOKEN = process.env.LOTUS_TOKEN;
+// const endpointUrl = "wss://lotus.testground.ipfs.team/api/0/node/rpc/v0";
 const provider = new NodejsProvider(endpointUrl, {
-  token: LOTUS_TOKEN,
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBbGxvdyI6WyJyZWFkIiwid3JpdGUiLCJzaWduIiwiYWRtaW4iXX0.hCv2GfO_kHoLLB2CjNgcBJ0HQUCSSqU81Cj-qC1U79k",
 });
 
 // const provider = new NodejsProvider(endpointUrl);
@@ -40,8 +45,7 @@ async function main(fileNameMiner) {
     // await getFileCID();
     // await authNew();
     // await getPieceCid();
-    emptyDirSync(`/${__dirname}/../uploadsCar`);
-    emptyDirSync(`/${__dirname}/../uploads`);
+
     console.log("running");
     console.log(fileNameMiner);
     const fileName = fileNameMiner.filesName;
@@ -49,7 +53,7 @@ async function main(fileNameMiner) {
     let pieceData = await checkPrice(fileName);
     pieceData.miner = fileNameMiner.miner;
     console.log(pieceData);
-    await makeDeal(pieceData);
+    // await makeDeal(pieceData);
     return pieceData;
 
     //   await sign();
@@ -73,7 +77,7 @@ async function makeDeal(pieceData) {
     EpochPrice: "0",
     MinBlocksDuration: 550000,
     ProviderCollateral: "0",
-    DealStartEpoch: 100630,
+    DealStartEpoch: 108000,
     FastRetrieval: false,
     VerifiedDeal: false,
   };
@@ -97,20 +101,53 @@ async function checkPrice(fileName) {
     },
     carFile
   );
+  console.log("getCarFile=", getCarFile);
+  console.log(carFile);
+  const carLink = await deploy(carFile);
   // console.log("PiceCID=", getCarFile);
+  const stats = statSync(carFile);
+  const fileSizeInBytes = stats.size;
+  console.log("fileSizeInBytes=", fileSizeInBytes);
   const getCommP = await client.clientCalcCommP(carFile);
   const pieceCid = getCommP.Root;
   console.log("PiceCID=", pieceCid);
   const pieceSize = getCommP.Size;
+  let b = 1;
+  do {
+    b *= 2;
+  } while (b < pieceSize);
   const pieceData = {
+    carLink: carLink,
+    carSize: fileSizeInBytes,
     root: fileCid.Root,
     pieceCid: pieceCid,
-    pieceSize: pieceSize,
+
+    pieceSize: b,
   };
   // unlinkSync(uploadedFile);
   // unlinkSync(carFile);
   return pieceData;
 }
+const deploy = async (path) => {
+  // return "https://gateway.lighthouse.storage/ipfs/QmakdnG1ZscfZj88pSgmZvFbzV9dmgPEkpN9fS4Z81o3bT";
+  // const API_KEY = "472046ea-ddbd-48fa-85f5-dce29687d8ef";
+  //Give path to the file
+  const apiKey = LIGHTHOUSE_API_KEY; //generate from https://files.lighthouse.storage/ or cli (lighthouse-web3 api-key --new)
+
+  const response = await lighthouse.upload(path, apiKey);
+  // const response = {
+  //   data: {
+  //     Hash: "QmZ5Y2J",
+  //   },
+  // };
+
+  // Display response
+  console.log(response);
+  console.log(
+    "Visit at: https://gateway.lighthouse.storage/ipfs/" + response.data.Hash
+  );
+  return "https://gateway.lighthouse.storage/ipfs/" + response.data.Hash;
+};
 let data;
 const router = express.Router();
 
@@ -153,7 +190,7 @@ router.get("/sendData", (req, res) => {
   res.json(data);
 });
 router.get("/dynamicData", (req, res) => {
-  const read = readFileSync("uploadData.json", { encoding: "utf8" });
+  const read = readFileSync("./uploadData.json", { encoding: "utf8" });
   res.json(read);
 });
 
