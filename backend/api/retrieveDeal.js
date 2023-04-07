@@ -73,11 +73,16 @@ router.post("/retrieveDeal", async (req, res) => {
   console.log(req.body);
   const data = req.body;
   const pieceData = {
-    root: data.root,
-    pieceCid: data.pieceCid,
+    root: {
+      "/": data.root,
+    },
+    pieceCid: {
+      "/": data.pieceCid,
+    },
     pieceSize: data.pieceSize,
-    miner: data.miner,
+    miner: "t01129",
   };
+  console.log(pieceData);
   const result = await main(pieceData);
   // const jsonResult = JSON.stringify(result);
   // res.json(result);

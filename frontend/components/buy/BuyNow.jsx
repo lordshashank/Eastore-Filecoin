@@ -76,6 +76,22 @@ const BuyNow = (props) => {
       return [...files];
     });
   }
+  const check = async (deal) => {
+    const response = await fetch("http://localhost:3001/sendDeals", {
+      method: "POST",
+      body: JSON.stringify({
+        owner: userAccount,
+        deal: deal,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        // Accept: "application/json",
+      },
+    });
+    const resData = await response.json();
+    console.log(resData);
+    return resData;
+  };
   const handleSubmit = async () => {
     // try {
     //   await Transfer();
@@ -102,6 +118,7 @@ const BuyNow = (props) => {
     } catch (error) {
       console.error(error);
     }
+    // let filesName;
     try {
       let filesName = [];
       for (let i = 0; i < files.length; i++) {
@@ -118,10 +135,7 @@ const BuyNow = (props) => {
       dealParams = resData;
 
       console.log(resData);
-    } catch (error) {
-      console.error(error);
-    }
-    try {
+
       const commP = dealParams.pieceCid["/"];
       console.log(commP);
       cid = new CID(commP);
@@ -147,26 +161,52 @@ const BuyNow = (props) => {
         extraParamsV1,
       ];
       console.log(DealRequestStruct);
-      const parameters = {
-        abi: contractABI,
-        contractAddress: contractAddress,
-        functionName: "makeDealProposal",
-        params: { deal: DealRequestStruct },
+      // const parameters = {
+      //   abi: contractABI,
+      //   contractAddress: contractAddress,
+      //   functionName: "makeDealProposal",
+      //   params: { deal: DealRequestStruct },
+      // };
+      // const result = await makeDealProposal({
+      //   params: parameters,
+      //   onSuccess: () => {
+      //     console.log("success");
+      //   },
+      //   onError: (error) => {
+      //     console.log(error);
+      //   },
+      // });
+      // console.log(result);
+      //save in database
+      const deal = {
+        fileName: "filesName[0]",
+        cid: dealParams.root["/"],
+        pieceCid: commP,
+        pieceSize: dealParams.pieceSize,
+        startEpoch: 520000,
+        endEpoch: 1555200,
+        verifiedDeal: false,
+        keepUnsealedCopy: true,
       };
-      const result = await makeDealProposal({
-        params: parameters,
-        onSuccess: () => {
-          console.log("success");
-        },
-        onError: (error) => {
-          console.log(error);
+      console.log(deal);
+      const response2 = await fetch("http://localhost:3001/sendDeals", {
+        method: "POST",
+        body: JSON.stringify({
+          owner: userAccount,
+          deal: deal,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          // Accept: "application/json",
         },
       });
-      console.log(result);
+      const resData2 = await response2.json();
+      console.log(resData2);
     } catch (error) {
       console.log(error);
     }
   };
+
   const dealIDButton = () => {
     return <button onClick={dealIDHandler}>Get deal ID</button>;
   };
@@ -383,6 +423,7 @@ const BuyNow = (props) => {
               )}
             </button>
             {dealIDButton()}
+            <button onClick={check}>check</button>
           </div>
         </div>
       </div>

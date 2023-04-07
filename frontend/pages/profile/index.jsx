@@ -8,7 +8,8 @@ import { useEvmNativeBalance } from "@moralisweb3/next";
 import { networkConfig } from "../../helper.config";
 import CompletedDeals from "../../components/deals/CompletedDeals";
 
-function Profile({ data }) {
+function Profile() {
+  const [data, setData] = useState([]);
   const filecoinChainId = networkConfig["3141"]["id"];
   const [chainId, setChainId] = useState("5");
   const [userAccount, setUserAccount] = useState();
@@ -45,6 +46,21 @@ function Profile({ data }) {
     };
     getIds();
   }, []);
+  const getDeals = async () => {
+    const response = await fetch("http://localhost:3001/getDeals", {
+      method: "POST",
+      body: JSON.stringify({ owner: userAccount }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    setData(data);
+  };
+  useEffect(() => {
+    getDeals();
+  }, [userAccount]);
+
   function getPrice(address, chainId) {
     const { data: nativeBalance } = useEvmNativeBalance({
       chain: `0x${chainId.toString(16)}`,
@@ -108,16 +124,17 @@ function Profile({ data }) {
   );
 }
 
-export async function getServerSideProps() {
-  try {
-    const res = await fetch("http://localhost:3001/dynamicData");
+// export async function getServerSideProps() {
+//   try {
+//     const res = await fetch("http://localhost:3001/getDeals");
 
-    const data = await res.json();
-    return { props: { data } };
-  } catch (error) {
-    return { props: { data: [] } };
-    console.log(error);
-  }
-}
+//     const data = await res.json();
+//     console.log(data);
+//     return { props: { data } };
+//   } catch (error) {
+//     return { props: { data: [] } };
+//     console.log(error);
+//   }
+// }
 
 export default Profile;

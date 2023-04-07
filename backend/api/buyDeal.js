@@ -112,24 +112,24 @@ async function checkPrice(fileName) {
   const pieceCid = getCommP.Root;
   console.log("PiceCID=", pieceCid);
   const pieceSize = getCommP.Size;
-  let b = 1;
+  let paddedSize = 1;
   do {
-    b *= 2;
-  } while (b < pieceSize);
+    paddedSize *= 2;
+  } while (paddedSize < pieceSize);
   const pieceData = {
     carLink: carLink,
     carSize: fileSizeInBytes,
     root: fileCid.Root,
     pieceCid: pieceCid,
 
-    pieceSize: b,
+    pieceSize: paddedSize,
   };
   // unlinkSync(uploadedFile);
   // unlinkSync(carFile);
   return pieceData;
 }
 const deploy = async (path) => {
-  // return "https://gateway.lighthouse.storage/ipfs/QmakdnG1ZscfZj88pSgmZvFbzV9dmgPEkpN9fS4Z81o3bT";
+  return "https://gateway.lighthouse.storage/ipfs/QmakdnG1ZscfZj88pSgmZvFbzV9dmgPEkpN9fS4Z81o3bT";
   // const API_KEY = "472046ea-ddbd-48fa-85f5-dce29687d8ef";
   //Give path to the file
   const apiKey = LIGHTHOUSE_API_KEY; //generate from https://files.lighthouse.storage/ or cli (lighthouse-web3 api-key --new)
@@ -172,8 +172,8 @@ router.post("/buyDeal", async (req, res) => {
   const read = readFileSync("uploadData.json", { encoding: "utf8" });
 
   const jsonRead = JSON.parse(read);
-  console.log(typeof jsonRead);
-  console.log(jsonRead);
+  // console.log(typeof jsonRead);
+  // console.log(jsonRead);
   jsonRead.push(result);
 
   writeFileSync("uploadData.json", JSON.stringify(jsonRead));
@@ -186,7 +186,7 @@ router.post("/buyDeal", async (req, res) => {
   //   });
 });
 router.get("/sendData", (req, res) => {
-  console.log(data);
+  // console.log(data);
   res.json(data);
 });
 router.get("/dynamicData", (req, res) => {
