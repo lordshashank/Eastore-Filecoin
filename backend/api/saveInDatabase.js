@@ -48,10 +48,11 @@ async function saveInDatabase(data) {
   }
 }
 
-router.post("/sendDeals", async (req, res, next) => {
+router.post("/sendDeal", async (req, res, next) => {
   console.log(req.body);
 
   const result = await saveInDatabase(req.body);
+  console.log(result);
   const jsonResult = JSON.stringify(result);
   return res.json(jsonResult);
 });

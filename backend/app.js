@@ -3,17 +3,19 @@ const app = express();
 const axios = require("axios");
 const multer = require("multer");
 const path = require("path");
-const runNode = require("./api/run-node-function");
+// const runNode = require("./api/run-node-function");
 const upload = require("./api/upload");
 const checkPrice = require("./api/checkPrice");
 const minerInfo = require("./api/miner-info");
 const buyDeal = require("./api/buyDeal");
 const retrieveDeal = require("./api/retrieveDeal");
-const buyPerpetualDeal = require("./api/buyPerpetualDeal");
+// const buyPerpetualDeal = require("./api/buyPerpetualDeal");
 const push = require("./api/push");
-const answer = require("./api/chatgpt");
+
+// const answer = require("./api/chatgpt");
 const saveInDatabase = require("./api/saveInDatabase");
 const getFromDatabase = require("./api/getFromDatabase");
+// const cors = require("cors");
 // const sendData = require("./api/bu");
 app.get("/", (req, res) => {
   res.json("Hello, World!");
@@ -33,23 +35,27 @@ app.use((req, res, next) => {
   );
 
   // Request headers you wish to allow
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, Accept"
+  );
 
   // Set to true if you need the website to include cookies in the requests sent to the API (e.g. in case you use sessions)
   //   res.setHeader("Access-Control-Allow-Credentials", true);
 
   next();
 });
-app.use(runNode);
+// app.use(cors());
+// app.use(runNode);
 app.use(upload);
 app.use(checkPrice);
 app.use(minerInfo);
 app.use(buyDeal);
 app.use(retrieveDeal);
 // app.use(sendData);
-app.use(buyPerpetualDeal);
+// app.use(buyPerpetualDeal);
 app.use(push);
-app.use(answer);
+// app.use(answer);
 app.use(saveInDatabase);
 app.use(getFromDatabase);
 
