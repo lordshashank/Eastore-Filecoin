@@ -7,14 +7,8 @@ import { useEffect, useState } from "react";
 import { useEvmNativeBalance } from "@moralisweb3/next";
 import { networkConfig } from "../../helper.config";
 import CompletedDeals from "../../components/deals/CompletedDeals";
-
+// import { useMoralis } from "react-moralis";
 function Profile() {
-  const [data, setData] = useState([]);
-  const filecoinChainId = networkConfig["3141"]["id"];
-  const [chainId, setChainId] = useState("5");
-  const [userAccount, setUserAccount] = useState();
-  const [totalStorage, setTotalStorage] = useState();
-
   const {
     Moralis,
     isWeb3Enabled,
@@ -23,10 +17,17 @@ function Profile() {
     user,
     deactivateWeb3,
   } = useMoralis();
+  console.log(account);
+  const [data, setData] = useState([]);
+  const filecoinChainId = networkConfig["3141"]["id"];
+  const [chainId, setChainId] = useState("5");
+  // const [userAccount, setUserAccount] = useState();
+  // const { account: userAccount } = useMoralis();
+  const [totalStorage, setTotalStorage] = useState();
 
   useEffect(() => {
     setChainId(parseInt(chainIdHex));
-    setUserAccount(account);
+    // setUserAccount(account);
   }, [isWeb3Enabled]);
 
   useEffect(() => {
@@ -41,25 +42,34 @@ function Profile() {
           deactivateWeb3();
           console.log("Null Account found");
         }
-        setUserAccount(account);
+        // setUserAccount(account);
       });
     };
     getIds();
   }, []);
   const getDeals = async () => {
+    console.log(account);
     const response = await fetch("http://localhost:3001/getDeals", {
       method: "POST",
-      body: JSON.stringify({ owner: userAccount }),
+      body: JSON.stringify({
+        owner: account,
+      }),
       headers: {
         "Content-Type": "application/json",
       },
     });
     const data = await response.json();
+    console.log(data);
     setData(data);
   };
   useEffect(() => {
-    getDeals();
-  }, [userAccount]);
+    if (account) {
+      getDeals();
+    } else {
+      setData([]);
+      console.log(data);
+    }
+  }, [account]);
 
   function getPrice(address, chainId) {
     const { data: nativeBalance } = useEvmNativeBalance({
@@ -70,7 +80,9 @@ function Profile() {
   }
   useEffect(() => {
     if (data.length > 0) {
+      console.log(data);
       const jsonData = JSON.parse(data);
+      console.log(jsonData);
       let totalStorage1 = 0;
       jsonData.forEach((deal) => {
         totalStorage1 += deal.pieceSize;
@@ -82,12 +94,12 @@ function Profile() {
   const accountInfo = (
     <>
       <h4>
-        Account: <span className={classes.userAccount}>{userAccount}</span>
+        Account: <span className={classes.userAccount}>{account}</span>
       </h4>
       <h4>
         BALANCE:{" "}
         <span>
-          {getPrice(userAccount, chainId)}
+          {getPrice(account, chainId)}
           {""}
           {chainId &&
             networkConfig[chainId] &&

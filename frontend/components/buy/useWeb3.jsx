@@ -16,6 +16,10 @@ const useWeb3 = () => {
   const [chainId, setChainId] = useState();
   const [userAccount, setUserAccount] = useState();
   useEffect(() => {
+    setUserAccount(account);
+    console.log(account);
+  }, [account]);
+  useEffect(() => {
     const getIds = async () => {
       Moralis.onChainChanged((chainIdHex) => {
         setChainId(parseInt(chainIdHex));
@@ -27,15 +31,12 @@ const useWeb3 = () => {
           deactivateWeb3();
           console.log("Null Account found");
         }
-        setUserAccount(account);
       });
     };
+
     getIds();
-    return () => {
-      console.log("This will be logged on unmount");
-    };
   }, []);
-  return { chainId, userAccount, Moralis };
+  return { chainId, userAccount, Moralis, isWeb3Enabled };
 };
 
 export default useWeb3;

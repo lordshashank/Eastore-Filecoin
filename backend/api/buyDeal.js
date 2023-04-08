@@ -129,7 +129,7 @@ async function checkPrice(fileName) {
   return pieceData;
 }
 const deploy = async (path) => {
-  return "https://gateway.lighthouse.storage/ipfs/QmakdnG1ZscfZj88pSgmZvFbzV9dmgPEkpN9fS4Z81o3bT";
+  // return "https://gateway.lighthouse.storage/ipfs/QmakdnG1ZscfZj88pSgmZvFbzV9dmgPEkpN9fS4Z81o3bT";
   // const API_KEY = "472046ea-ddbd-48fa-85f5-dce29687d8ef";
   //Give path to the file
   const apiKey = LIGHTHOUSE_API_KEY; //generate from https://files.lighthouse.storage/ or cli (lighthouse-web3 api-key --new)

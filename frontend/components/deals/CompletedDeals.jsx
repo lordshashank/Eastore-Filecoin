@@ -51,10 +51,10 @@ const CompletedDeals = ({ data }) => {
                     <p>Piece Size:</p>
                   </div>
                   <div className={classes.values}>
-                    <p>{data.fileName}</p>
-                    <p>{data.root["/"]}</p>
-                    <p>{data.pieceCid["/"]}</p>
-                    <p>{data.pieceSize}</p>
+                    <p>{jsonData[index].fileName}</p>
+                    <p>{jsonData[index].cid}</p>
+                    <p>{jsonData[index].pieceCid}</p>
+                    <p>{jsonData[index].pieceSize}</p>
                   </div>
                 </div>
                 <button

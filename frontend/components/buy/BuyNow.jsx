@@ -6,7 +6,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { IoMdCloudUpload } from "react-icons/io";
 import useWeb3 from "./useWeb3";
 import contract from "../../contracts/DealClient.json";
-import { useWeb3Contract } from "react-moralis";
+import { useWeb3Contract, useMoralis } from "react-moralis";
 
 const CID = require("cids");
 const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
@@ -22,10 +22,14 @@ const BuyNow = (props) => {
   const [dealID, setDealID] = useState("");
 
   const [files, setFiles] = useState([]);
-  const { chainId, userAccount, Moralis } = useWeb3();
-
+  const { chainId, Moralis } = useWeb3();
+  const { account: userAccount } = useMoralis();
   const { runContractFunction: makeDealProposal } = useWeb3Contract({});
   const { runContractFunction: pieceDeals } = useWeb3Contract({});
+  useEffect(() => {
+    console.log(userAccount);
+  }, [userAccount]);
+
   const Transfer = async () => {
     const options = {
       type: "native",
@@ -76,9 +80,20 @@ const BuyNow = (props) => {
       return [...files];
     });
   }
-  const check = async (deal) => {
-    const response = await fetch("http://localhost:3001/sendDeals", {
+  const check = async () => {
+    const deal = {
+      fileName: "filesName[0]",
+      cid: "check",
+      pieceCid: "commP",
+      pieceSize: "dealParams.pieceSize",
+      startEpoch: 520000,
+      endEpoch: 1555200,
+      verifiedDeal: false,
+      keepUnsealedCopy: true,
+    };
+    const response = await fetch("http://localhost:3001/sendDeal", {
       method: "POST",
+      // mode: "no-cors",
       body: JSON.stringify({
         owner: userAccount,
         deal: deal,
@@ -98,6 +113,8 @@ const BuyNow = (props) => {
     // } catch (error) {
     //   console.log(error);
     // }
+    console.log(userAccount);
+    let deal;
     try {
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -152,8 +169,8 @@ const BuyNow = (props) => {
         false, //taskArgs.verifiedDeal,
         commP, //taskArgs.label,
         // 520000, // startEpoch
-        520000, // startEpoch
-        1555200, // endEpoch
+        250000, // startEpoch
+        1255200, // endEpoch
         0, // taskArgs.storagePricePerEpoch,
         0, // taskArgs.providerCollateral,
         0, // taskArgs.clientCollateral,
@@ -161,25 +178,25 @@ const BuyNow = (props) => {
         extraParamsV1,
       ];
       console.log(DealRequestStruct);
-      // const parameters = {
-      //   abi: contractABI,
-      //   contractAddress: contractAddress,
-      //   functionName: "makeDealProposal",
-      //   params: { deal: DealRequestStruct },
-      // };
-      // const result = await makeDealProposal({
-      //   params: parameters,
-      //   onSuccess: () => {
-      //     console.log("success");
-      //   },
-      //   onError: (error) => {
-      //     console.log(error);
-      //   },
-      // });
-      // console.log(result);
-      //save in database
-      const deal = {
-        fileName: "filesName[0]",
+      const parameters = {
+        abi: contractABI,
+        contractAddress: contractAddress,
+        functionName: "makeDealProposal",
+        params: { deal: DealRequestStruct },
+      };
+      const result = await makeDealProposal({
+        params: parameters,
+        onSuccess: () => {
+          console.log("success");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+      console.log(result);
+      // save in database;
+      deal = {
+        fileName: filesName[0],
         cid: dealParams.root["/"],
         pieceCid: commP,
         pieceSize: dealParams.pieceSize,
@@ -189,22 +206,34 @@ const BuyNow = (props) => {
         keepUnsealedCopy: true,
       };
       console.log(deal);
-      const response2 = await fetch("http://localhost:3001/sendDeals", {
-        method: "POST",
-        body: JSON.stringify({
-          owner: userAccount,
-          deal: deal,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          // Accept: "application/json",
-        },
-      });
-      const resData2 = await response2.json();
-      console.log(resData2);
+
+      filesName = [];
     } catch (error) {
       console.log(error);
     }
+    setTimeout(async () => {
+      if (userAccount) {
+        try {
+          const response = await fetch("http://localhost:3001/sendDeal", {
+            method: "POST",
+            // mode: "no-cors",
+            body: JSON.stringify({
+              owner: userAccount,
+              deal: deal,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              // Accept: "application/json",
+            },
+          });
+          const resData = await response.json();
+          console.log(resData);
+          return resData;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }, 15000);
   };
 
   const dealIDButton = () => {

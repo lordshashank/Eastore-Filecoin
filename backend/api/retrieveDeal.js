@@ -74,7 +74,7 @@ router.post("/retrieveDeal", async (req, res) => {
   const data = req.body;
   const pieceData = {
     root: {
-      "/": data.root,
+      "/": data.cid,
     },
     pieceCid: {
       "/": data.pieceCid,
