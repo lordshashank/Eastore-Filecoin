@@ -1,6 +1,6 @@
 import { getDeal } from "../db/getDeal";
 export const getDealsRoute = {
-  method: "get",
+  method: "post",
   path: "/getDeals",
   handler: async (req, res) => {
     const result = await getDeal(req.body.owner);
