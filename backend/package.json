@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "description": "Examples for using the Lotus RPC API with `js-lotus-client`.",
-  "main": "index.js",
+  "main": "src/",
   "scripts": {
-    "start": "ts-node app.js",
+    "start": "nodemon --exec 'babel-node src/server.js'",
     "build": "tsc --build ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start1": "nodemon app.js",
@@ -22,6 +22,9 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.21.4",
     "@filecoin-shipyard/lotus-client-provider-nodejs": "^0.0.5",
     "@filecoin-shipyard/lotus-client-rpc": "^0.0.13",
     "@filecoin-shipyard/lotus-client-schema": "^2.0.0",
@@ -31,6 +34,7 @@
     "dotenv": "^16.0.3",
     "ethers": "^6.0.2",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
     "fs-extra": "^11.1.1",
     "ipfs-car": "^0.9.1",
     "mongodb": "^5.2.0",

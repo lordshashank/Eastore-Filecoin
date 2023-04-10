@@ -6,6 +6,8 @@ const CompletedDeals = ({ data }) => {
   useEffect(() => {
     if (data.length > 0) {
       setJsonData(JSON.parse(data));
+    } else {
+      setJsonData([]);
     }
   }, [data]);
   const handleDownload = async (data) => {

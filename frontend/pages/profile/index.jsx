@@ -65,7 +65,8 @@ function Profile() {
   useEffect(() => {
     if (account) {
       getDeals();
-    } else {
+    }
+    if (!account) {
       setData([]);
       console.log(data);
     }
