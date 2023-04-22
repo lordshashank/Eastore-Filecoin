@@ -20,6 +20,7 @@ const BuyNow = (props) => {
   const [isUploaded, setIsUploaded] = useState(false);
   const [drag, setDrag] = useState(false);
   const [dealID, setDealID] = useState("");
+  const [dealCid, setDealCid] = useState("");
 
   const [files, setFiles] = useState([]);
   const { chainId, Moralis } = useWeb3();
@@ -155,8 +156,9 @@ const BuyNow = (props) => {
 
       const commP = dealParams.pieceCid["/"];
       console.log(commP);
+      // setDealCid(commP);
       cid = new CID(commP);
-
+      setDealCid(cid);
       const extraParamsV1 = [
         dealParams.carLink,
         dealParams.carSize, //carSize,
@@ -243,13 +245,17 @@ const BuyNow = (props) => {
     // cid = new CID(
     //   "baga6ea4seaqcjwtmhku7gbmbqgab3wo74ehsutypdx6wgtm4co7xduf54d2acli"
     // );
-
-    console.log(cid.bytes);
+    // event.preventDefault();
+    // cid = new CID(dealCid);
+    // let finalDealId;
+    console.log(dealCid.string);
+    const cidBytes = dealCid.bytes;
+    console.log(cidBytes);
     // return;
     setDealID("Waiting for acceptance by SP...");
     // cid = new CID(commP);
     var refresh = setInterval(async () => {
-      console.log(cid.bytes);
+      console.log(cidBytes);
       if (cid === undefined) {
         setDealID("Error: CID not found");
         clearInterval(refresh);
@@ -260,7 +266,7 @@ const BuyNow = (props) => {
         abi: contractABI,
         contractAddress: contractAddress,
         functionName: "pieceDeals",
-        params: { "": cid.bytes },
+        params: { "": cidBytes },
       };
       const result = await pieceDeals({
         params: parameters,
@@ -272,11 +278,37 @@ const BuyNow = (props) => {
         },
       });
       console.log(result);
-      console.log(dealID);
-      if (dealID !== undefined && dealID !== "0") {
+      const finalDealId = Number(result._hex);
+      console.log(finalDealId);
+      if (finalDealId !== undefined && finalDealId !== "0") {
         // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
         // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
-        setDealID("https://hyperspace.filfox.info/en/deal/" + dealID);
+        setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
+        if (userAccount && finalDealId) {
+          try {
+            const response = await fetch(
+              "http://localhost:3001/update-dealId",
+              {
+                method: "POST",
+                // mode: "no-cors",
+                body: JSON.stringify({
+                  owner: userAccount,
+                  pieceCid: dealCid.string,
+                  dealId: finalDealId,
+                }),
+                headers: {
+                  "Content-Type": "application/json",
+                  // Accept: "application/json",
+                },
+              }
+            );
+            const resData = await response.json();
+            console.log(resData);
+            return resData;
+          } catch (error) {
+            console.log(error);
+          }
+        }
         clearInterval(refresh);
       }
     }, 5000);
@@ -369,6 +401,22 @@ const BuyNow = (props) => {
                   PRICE: <span>{modalData.Price}</span>
                 </h6>
               </div>
+              <form onSubmit={dealIDHandler}>
+                <div>
+                  <label htmlFor="cid">CID</label>
+                  <input
+                    type="text"
+                    name="cid"
+                    id="cid"
+                    value={cid}
+                    onChange={(e) => {
+                      cid = new CID(e.target.value);
+                      setDealCid(cid);
+                    }}
+                  />
+                </div>
+              </form>
+
               <button
                 className={classes["check-price-button"]}
                 onClick={onHandleClickPrice}
