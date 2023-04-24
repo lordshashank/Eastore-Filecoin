@@ -1,7 +1,91 @@
 import classes from "../../styles/CompletedDeals.module.css";
+import { contractAddress } from "../../constants";
 import { useState, useEffect } from "react";
+import { useWeb3Contract } from "react-moralis";
+import contract from "../../contracts/DealClient.json";
 const CompletedDeals = ({ data }) => {
   const [jsonData, setJsonData] = useState([]);
+  const [dealId, setDealID] = useState("");
+  const [loadingDeal, setLoadingDeal] = useState(false);
+  const [showDeal, setShowDeal] = useState(false);
+  const { runContractFunction: pieceDeals } = useWeb3Contract({});
+  const dealIDHandler = async (cid) => {
+    // cid = new CID(
+    //   "baga6ea4seaqcjwtmhku7gbmbqgab3wo74ehsutypdx6wgtm4co7xduf54d2acli"
+    // );
+    // event.preventDefault();
+    // cid = new CID(dealCid);
+    // let finalDealId;
+    // console.log(dealCid.string);
+    // const cidBytes = dealCid.bytes;
+    // const cidBytes = cid.bytes;
+    // console.log(cidBytes);
+    // return;
+    setDealID("Waiting for acceptance by SP...");
+    // cid = new CID(commP);
+    var refresh = setInterval(async () => {
+      // console.log(cidBytes);
+      setLoadingDeal(true);
+      if (cid === undefined) {
+        setDealID("Error: CID not found");
+        clearInterval(refresh);
+      }
+      console.log("Checking for deal ID...");
+      // const dealID = await dealClient.pieceDeals(cid.bytes);
+      const parameters = {
+        abi: contract.abi,
+        contractAddress: contractAddress,
+        functionName: "pieceDeals",
+        params: { "": cid },
+      };
+      const result = await pieceDeals({
+        params: parameters,
+        onSuccess: () => {
+          console.log("success");
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      });
+      console.log(result);
+      setLoadingDeal(false);
+      const finalDealId = Number(result._hex);
+      console.log(finalDealId);
+
+      if (finalDealId !== undefined && finalDealId !== "0") {
+        // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
+        // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
+        setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
+        setShowDeal(true);
+        if (userAccount && finalDealId) {
+          try {
+            const response = await fetch(
+              "http://localhost:3001/update-dealId",
+              {
+                method: "POST",
+                // mode: "no-cors",
+                body: JSON.stringify({
+                  owner: userAccount,
+                  pieceCid: dealCid.string,
+                  dealId: finalDealId,
+                }),
+                headers: {
+                  "Content-Type": "application/json",
+                  // Accept: "application/json",
+                },
+              }
+            );
+            const resData = await response.json();
+            console.log(resData);
+            return resData;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        clearInterval(refresh);
+      }
+    }, 5000);
+  };
 
   useEffect(() => {
     if (data.length > 0) {
@@ -67,6 +151,28 @@ const CompletedDeals = ({ data }) => {
                 >
                   Download
                 </button>
+                <button
+                  className={classes.button}
+                  onClick={() => {
+                    dealIDHandler(jsonData[index].cid);
+                  }}
+                  style={{ marginLeft: "1rem" }}
+                >
+                  {!loadingDeal ? (
+                    <span>Get Deal Id</span>
+                  ) : (
+                    <div className="spinner"></div>
+                  )}
+                </button>
+                {dealId && (
+                  <a
+                    style={{ display: "block", marginTop: "1rem" }}
+                    href={dealId}
+                    target="_blank"
+                  >
+                    See your deal
+                  </a>
+                )}
               </div>
             </div>
           ))
