@@ -218,3 +218,7 @@
   padding: 0;
   margin: 0;
 }
+
+.miner_details > input {
+  padding: 0.3rem 0.5rem;
+}

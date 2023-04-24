@@ -1,8 +1,18 @@
+import { useState } from "react";
 import classes from "../../styles/Home.module.css";
+import styles from "../../styles/ManualHeader.module.css";
 import ManualHeader from "../header/ManualHeader";
+import UploadFile from "../buy/UploadFile";
 const HomeContent = () => {
+  const [showCart, setShowCart] = useState(false);
   return (
     <div className={classes["home-content"]}>
+      {showCart && (
+        <UploadFile
+          onClose={() => setShowCart(false)}
+          anotherFunction={false}
+        />
+      )}
       <div className={classes.content}>
         <h1 className={classes.heading}>Eastore</h1>
         <p>
@@ -12,7 +22,15 @@ const HomeContent = () => {
           accustomed to your preference from wide-range of Storage Providers
           available on filecoin marketplace.
         </p>
-        <ManualHeader buttonClassName={"button"} />
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <ManualHeader buttonClassName={"button"} />
+          <button
+            className={styles.button}
+            onClick={() => setShowCart(!showCart)}
+          >
+            Upload File
+          </button>
+        </div>
       </div>
     </div>
   );

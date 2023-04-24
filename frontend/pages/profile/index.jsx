@@ -80,7 +80,7 @@ function Profile() {
     return nativeBalance?.balance.ether;
   }
   useEffect(() => {
-    if (data.length > 0) {
+    if (typeof data === String) {
       console.log(data);
       const jsonData = JSON.parse(data);
       console.log(jsonData);
@@ -130,7 +130,11 @@ function Profile() {
           </div>
         </div>
         <div className={classes.details}>
-          <CompletedDeals data={data} />
+          {data.error ? (
+            <h1 style={{ color: "white" }}>No Deals Found.</h1>
+          ) : (
+            <CompletedDeals data={data} />
+          )}
         </div>
       </div>
     </div>
