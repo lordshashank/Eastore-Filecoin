@@ -1,14 +1,21 @@
 import classes from "../../styles/CompletedDeals.module.css";
-import { contractAddress } from "../../constants";
+// import { contractAddress } from "../../constants";
 import { useState, useEffect } from "react";
+import { useMoralis } from "react-moralis";
 import { useWeb3Contract } from "react-moralis";
 import contract from "../../contracts/DealClient.json";
+import CID from "cids";
+const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
 const CompletedDeals = ({ data }) => {
+  const { account: userAccount } = useMoralis();
   const [jsonData, setJsonData] = useState([]);
   const [dealId, setDealID] = useState("");
   const [loadingDeal, setLoadingDeal] = useState(false);
   const [showDeal, setShowDeal] = useState(false);
   const { runContractFunction: pieceDeals } = useWeb3Contract({});
+  useEffect(() => {
+    console.log(dealId);
+  }, [dealId]);
   const dealIDHandler = async (cid) => {
     // cid = new CID(
     //   "baga6ea4seaqcjwtmhku7gbmbqgab3wo74ehsutypdx6wgtm4co7xduf54d2acli"
@@ -16,15 +23,16 @@ const CompletedDeals = ({ data }) => {
     // event.preventDefault();
     // cid = new CID(dealCid);
     // let finalDealId;
-    // console.log(dealCid.string);
-    // const cidBytes = dealCid.bytes;
+    console.log(cid.string);
+    const cidBytes = cid.bytes;
     // const cidBytes = cid.bytes;
     // console.log(cidBytes);
     // return;
+    console.log(cid);
     setDealID("Waiting for acceptance by SP...");
     // cid = new CID(commP);
     var refresh = setInterval(async () => {
-      // console.log(cidBytes);
+      console.log(cidBytes);
       setLoadingDeal(true);
       if (cid === undefined) {
         setDealID("Error: CID not found");
@@ -36,7 +44,7 @@ const CompletedDeals = ({ data }) => {
         abi: contract.abi,
         contractAddress: contractAddress,
         functionName: "pieceDeals",
-        params: { "": cid },
+        params: { "": cidBytes },
       };
       const result = await pieceDeals({
         params: parameters,
@@ -154,7 +162,9 @@ const CompletedDeals = ({ data }) => {
                 <button
                   className={classes.button}
                   onClick={() => {
-                    dealIDHandler(jsonData[index].cid);
+                    console.log(jsonData[index].pieceCid);
+                    const cid = new CID(jsonData[index].pieceCid);
+                    dealIDHandler(cid);
                   }}
                   style={{ marginLeft: "1rem" }}
                 >

@@ -7,13 +7,15 @@ import { IoMdCloudUpload } from "react-icons/io";
 import useWeb3 from "./useWeb3";
 import contract from "../../contracts/DealClient.json";
 import { useWeb3Contract, useMoralis } from "react-moralis";
-
+// import { CID } from "cids";
 const CID = require("cids");
 const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
 const contractABI = contract.abi;
 let cid;
 let dealParams;
 const UploadFile = (props) => {
+  // const modalData = props.modalData;
+
   const [isLoading, setIsLoading] = useState(false);
   const fileInput = useRef();
   const [isUploaded, setIsUploaded] = useState(false);
@@ -24,9 +26,12 @@ const UploadFile = (props) => {
     endTime: "",
     isChecked: true,
   });
-  //   const [dealCid, setDealCid] = useState("");
+  const [dealCid, setDealCid] = useState("");
 
   console.log(values);
+  // const startDate = new Date(values.startTime);
+  // const startTime = startDate.getTime() / 1000;
+  // console.log(startTime);
   const [files, setFiles] = useState([]);
   const { chainId, Moralis } = useWeb3();
   const { account: userAccount } = useMoralis();
@@ -43,14 +48,14 @@ const UploadFile = (props) => {
     console.log(userAccount);
   }, [userAccount]);
 
-  const Transfer = async () => {
-    const options = {
-      type: "native",
-      amount: Moralis.Units.ETH("0.0"),
-      receiver: "0x9299eac94952235Ae86b94122D2f7c77F7F6Ad30",
-    };
-    let result = await Moralis.transfer(options);
-  };
+  // const Transfer = async () => {
+  //   const options = {
+  //     type: "native",
+  //     amount: Moralis.Units.ETH("0.0"),
+  //     receiver: "0x9299eac94952235Ae86b94122D2f7c77F7F6Ad30",
+  //   };
+  //   let result = await Moralis.transfer(options);
+  // };
   function onDrag(e) {
     e.preventDefault();
     setDrag(true);
@@ -97,33 +102,33 @@ const UploadFile = (props) => {
     event.preventDefault();
     console.log(values);
   };
-  const check = async () => {
-    const deal = {
-      fileName: "filesName[0]",
-      cid: "check",
-      pieceCid: "commP",
-      pieceSize: "dealParams.pieceSize",
-      startEpoch: 520000,
-      endEpoch: 1555200,
-      verifiedDeal: false,
-      keepUnsealedCopy: true,
-    };
-    const response = await fetch("http://localhost:3001/sendDeal", {
-      method: "POST",
-      // mode: "no-cors",
-      body: JSON.stringify({
-        owner: userAccount,
-        deal: deal,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        // Accept: "application/json",
-      },
-    });
-    const resData = await response.json();
-    console.log(resData);
-    return resData;
-  };
+  // const check = async () => {
+  //   const deal = {
+  //     fileName: "filesName[0]",
+  //     cid: "check",
+  //     pieceCid: "commP",
+  //     pieceSize: "dealParams.pieceSize",
+  //     startEpoch: 520000,
+  //     endEpoch: 1555200,
+  //     verifiedDeal: false,
+  //     keepUnsealedCopy: true,
+  //   };
+  //   const response = await fetch("http://localhost:3001/sendDeal", {
+  //     method: "POST",
+  //     // mode: "no-cors",
+  //     body: JSON.stringify({
+  //       owner: userAccount,
+  //       deal: deal,
+  //     }),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       // Accept: "application/json",
+  //     },
+  //   });
+  //   const resData = await response.json();
+  //   console.log(resData);
+  //   return resData;
+  // };
   const handleSubmit = async () => {
     // try {
     //   await Transfer();
@@ -152,6 +157,7 @@ const UploadFile = (props) => {
     } catch (error) {
       console.error(error);
     }
+
     // let filesName;
     try {
       let filesName = [];
@@ -160,7 +166,7 @@ const UploadFile = (props) => {
       }
       const response = await fetch("http://localhost:3001/buyDeal", {
         method: "POST",
-        body: JSON.stringify({ filesName: filesName, miner: modalData.Miner }),
+        body: JSON.stringify({ filesName: filesName, miner: "t19920" }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -168,13 +174,26 @@ const UploadFile = (props) => {
       const resData = await response.json();
       dealParams = resData;
 
-      console.log(resData);
+      console.log(dealParams);
 
-      const commP = dealParams.pieceCid["/"];
+      const commP = dealParams["pieceCid"];
       console.log(commP);
       // setDealCid(commP);
+
       cid = new CID(commP);
       setDealCid(cid);
+      const genesisDate = new Date("2023-01-13");
+      const genesisTime = genesisDate.getTime() / 1000;
+      console.log(genesisTime);
+      const startDate = new Date(values.startTime);
+      const startTime = startDate.getTime() / 1000;
+      console.log(startTime);
+      const endDate = new Date(values.endTime);
+      const endTime = endDate.getTime() / 1000;
+      console.log(endTime);
+      const startEpoch = Math.floor((startTime - genesisTime) / 30) + 2000;
+      const endEpoch = Math.floor((endTime - genesisTime) / 30) + 2000;
+      console.log(startEpoch, "to", endEpoch);
       const extraParamsV1 = [
         dealParams.carLink,
         dealParams.carSize, //carSize,
@@ -187,8 +206,8 @@ const UploadFile = (props) => {
         false, //taskArgs.verifiedDeal,
         commP, //taskArgs.label,
         // 520000, // startEpoch
-        250000, // startEpoch
-        1255200, // endEpoch
+        startEpoch, // startEpoch
+        endEpoch, // endEpoch
         0, // taskArgs.storagePricePerEpoch,
         0, // taskArgs.providerCollateral,
         0, // taskArgs.clientCollateral,
@@ -214,44 +233,63 @@ const UploadFile = (props) => {
       console.log(result);
       // save in database;
       deal = {
+        id: dealParams.id,
         fileName: filesName[0],
-        cid: dealParams.root["/"],
+        mimeType: dealParams.mimeType,
+        cid: dealParams.root,
         pieceCid: commP,
         pieceSize: dealParams.pieceSize,
-        startEpoch: 520000,
-        endEpoch: 1555200,
+        startDate: values.startTime,
+        startEpoch: startEpoch,
+        endDate: values.endTime,
+        endEpoch: endEpoch,
         verifiedDeal: false,
-        keepUnsealedCopy: true,
+        keepUnsealedCopy: values.isChecked,
       };
       console.log(deal);
 
       filesName = [];
+      const dbResponse = await fetch("http://localhost:3001/sendDeal", {
+        method: "POST",
+        // mode: "no-cors",
+        body: JSON.stringify({
+          owner: userAccount,
+          deal: deal,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          // Accept: "application/json",
+        },
+      });
+      console.log(dbResponse);
+      const dbResData = await dbResponse.json();
+      console.log(dbResData);
     } catch (error) {
       console.log(error);
     }
-    setTimeout(async () => {
-      if (userAccount) {
-        try {
-          const response = await fetch("http://localhost:3001/sendDeal", {
-            method: "POST",
-            // mode: "no-cors",
-            body: JSON.stringify({
-              owner: userAccount,
-              deal: deal,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              // Accept: "application/json",
-            },
-          });
-          const resData = await response.json();
-          console.log(resData);
-          return resData;
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    }, 15000);
+    // setTimeout(async () => {
+    //   if (userAccount) {
+    //     try {
+    //       const response = await fetch("http://localhost:3001/sendDeal", {
+    //         method: "POST",
+    //         // mode: "no-cors",
+    //         body: JSON.stringify({
+    //           owner: userAccount,
+    //           deal: deal,
+    //         }),
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           // Accept: "application/json",
+    //         },
+    //       });
+    //       const resData = await response.json();
+    //       console.log(resData);
+    //       return resData;
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //   }
+    // }, 15000);
   };
 
   const dealIDButton = () => {
@@ -342,46 +380,46 @@ const UploadFile = (props) => {
       return;
     }
   }, [isUploaded]);
-  const onHandleClickPrice = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-      }
-      const response = await fetch("http://localhost:3001/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const resData = await response.json();
-      console.log(resData);
-      if (response.status == 200) {
-        setIsUploaded(true);
-        setFiles([]);
-      } else {
-        setIsUploaded(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    try {
-      let filesName = [];
-      for (let i = 0; i < files.length; i++) {
-        filesName.push(files[i].name);
-      }
-      const response = await fetch("http://localhost:3001/check-price", {
-        method: "POST",
-        body: JSON.stringify(filesName),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const resData = await response.json();
-      console.log(resData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const onHandleClickPrice = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const formData = new FormData();
+  //     for (let i = 0; i < files.length; i++) {
+  //       formData.append("files", files[i]);
+  //     }
+  //     const response = await fetch("http://localhost:3001/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //     });
+  //     const resData = await response.json();
+  //     console.log(resData);
+  //     if (response.status == 200) {
+  //       setIsUploaded(true);
+  //       setFiles([]);
+  //     } else {
+  //       setIsUploaded(false);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  //   try {
+  //     let filesName = [];
+  //     for (let i = 0; i < files.length; i++) {
+  //       filesName.push(files[i].name);
+  //     }
+  //     const response = await fetch("http://localhost:3001/check-price", {
+  //       method: "POST",
+  //       body: JSON.stringify(filesName),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     const resData = await response.json();
+  //     console.log(resData);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <Modal onClose={props.onClose}>
@@ -445,12 +483,12 @@ const UploadFile = (props) => {
                 </div>
               </form> */}
 
-              <button
+              {/* <button
                 className={classes["check-price-button"]}
                 onClick={onHandleClickPrice}
               >
                 CHECK PRICE
-              </button>
+              </button> */}
             </div>
             <div
               className={classes.input_field}
@@ -527,8 +565,8 @@ const UploadFile = (props) => {
                 <div className="spinner"></div>
               )}
             </button>
-            {dealIDButton()}
-            <button onClick={check}>check</button>
+            {/* {dealIDButton()}
+            <button onClick={check}>check</button> */}
           </div>
         </div>
       </div>
