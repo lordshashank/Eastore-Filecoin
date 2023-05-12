@@ -58,6 +58,9 @@
   font-size: 1.5rem;
   color: #dddddd;
 }
+.highlight-text {
+  color: red;
+}
 .bg {
   display: flex;
 }

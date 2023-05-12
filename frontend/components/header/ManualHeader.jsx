@@ -17,6 +17,15 @@ const ManualHeader = (props) => {
       }
     });
   }, []);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const connected = window.localStorage.getItem("connected");
+      if (connected) {
+        enableWeb3();
+      }
+    }
+  }, []);
+
   const deactivateConnectButton = async () => {
     await deactivateWeb3();
     if (typeof window !== "undefined") {

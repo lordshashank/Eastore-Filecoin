@@ -83,67 +83,71 @@ const DealItem = ({ deal }) => {
     console.log(cid);
     setDealID("Waiting for acceptance by SP...");
     // cid = new CID(commP);
-    var refresh = setInterval(async () => {
-      console.log(cidBytes);
-      if (cid === undefined) {
-        setDealID("Error: CID not found");
-        clearInterval(refresh);
-      }
-      console.log("Checking for deal ID...");
-      // const dealID = await dealClient.pieceDeals(cid.bytes);
-      const parameters = {
-        abi: contract.abi,
-        contractAddress: contractAddress,
-        functionName: "pieceDeals",
-        params: { "": cidBytes },
-      };
-      const result = await pieceDeals({
-        params: parameters,
-        onSuccess: () => {
-          console.log("success");
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
-      console.log(result);
-      setLoadingDeal(false);
-      const finalDealId = Number(result._hex);
-      console.log(finalDealId);
+    // var refresh = setInterval(async () => {
+    console.log(cidBytes);
+    if (cid === undefined) {
+      setDealID("Error: CID not found");
+      // clearInterval(refresh);
+      return;
+    }
+    console.log("Checking for deal ID...");
+    // const dealID = await dealClient.pieceDeals(cid.bytes);
+    const parameters = {
+      abi: contract.abi,
+      contractAddress: contractAddress,
+      functionName: "pieceDeals",
+      params: { "": cidBytes },
+    };
+    const result = await pieceDeals({
+      params: parameters,
+      onSuccess: () => {
+        console.log("success");
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+    console.log(result);
+    setLoadingDeal(false);
+    // const finalDealId = Number(result._hex);
+    const finalDealId = 0;
+    console.log(finalDealId);
+    if (finalDealId == undefined || finalDealId == "0") {
+      setDealID("Waiting for acceptance by SP...");
+      console.log("Waiting for acceptance by SP...");
+      return;
+    }
 
-      if (finalDealId !== undefined && finalDealId !== "0") {
-        // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
-        // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
-        setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
-        if (userAccount && finalDealId) {
-          try {
-            const response = await fetch(
-              "http://localhost:3001/update-dealId",
-              {
-                method: "POST",
-                // mode: "no-cors",
-                body: JSON.stringify({
-                  owner: userAccount,
-                  pieceCid: dealCid.string,
-                  dealId: finalDealId,
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                  // Accept: "application/json",
-                },
-              }
-            );
-            const resData = await response.json();
-            console.log(resData);
-            return resData;
-          } catch (error) {
-            console.log(error);
-          }
+    if (finalDealId !== undefined && finalDealId !== "0") {
+      // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
+      // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
+      setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
+      if (userAccount && finalDealId) {
+        try {
+          const response = await fetch("http://localhost:3001/update-dealId", {
+            method: "POST",
+            // mode: "no-cors",
+            body: JSON.stringify({
+              owner: userAccount,
+              pieceCid: cid.string,
+              dealId: finalDealId,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              // Accept: "application/json",
+            },
+          });
+          const resData = await response.json();
+          console.log(resData);
+          return resData;
+        } catch (error) {
+          console.log(error);
         }
-        clearInterval(refresh);
       }
-      setLoadingDeal(false);
-    }, 5000);
+      // clearInterval(refresh);
+    }
+    setLoadingDeal(false);
+    // }, 5000);
   };
   return (
     <div className={classes.deals_wraper}>

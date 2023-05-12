@@ -16,11 +16,21 @@ const HomeContent = () => {
       <div className={classes.content}>
         <h1 className={classes.heading}>Eastore</h1>
         <p>
-          A decentralized storage marketplace and full-sector bounty rewarder
-          built over Filecoin Virtual Machine. Bringing simplified data storage
-          and retrieval at your fingertips. Now you can easily choose deals
-          accustomed to your preference from wide-range of Storage Providers
-          available on filecoin marketplace.
+          Eastore is a decentralized solution on Filecoin that stores your files
+          directly to the Filecoin network using smart contracts completely
+          on-chain. This is a nominal version of Eastore in hyperspace testnet.
+          you can try it out by uploading a file by clicking on button below.
+          <br /> Want some fil tokens?{" "}
+          <a href="https://hyperspace.yoga/#faucet" target="_blank">
+            Click here
+          </a>{" "}
+          to get some.
+          <br />
+          <span className={classes["highlight-text"]}>
+            {" "}
+            Note: This is a testnet version of the app. Please don't upload any
+            important and private files here.{" "}
+          </span>
         </p>
         <div style={{ display: "flex", gap: "1rem" }}>
           <ManualHeader buttonClassName={"button"} />
