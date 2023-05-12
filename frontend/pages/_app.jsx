@@ -11,7 +11,7 @@ const MyApp = ({ Component, pageProps }) => {
       <NotificationProvider>
         <Head>
           <title>StoreEasy</title>
-          <link rel="icon" type="image/png" href={logo} />
+          <link rel="icon" type="image/png" src={logo} />
         </Head>
         <Loader />
         <Component {...pageProps} />
