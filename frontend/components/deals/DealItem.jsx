@@ -132,7 +132,7 @@ const DealItem = ({ deal }) => {
       if (userAccount && finalDealId) {
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}update-dealId`,
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/update-dealId`,
             {
               method: "POST",
               // mode: "no-cors",
