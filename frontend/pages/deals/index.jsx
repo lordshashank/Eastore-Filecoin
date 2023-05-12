@@ -2,7 +2,7 @@ import Header from "../../components/header/Header";
 import classes from "../../styles/Filter.module.css";
 import { FaFilter, FaCartPlus } from "react-icons/fa";
 import { MdDone } from "react-icons/md";
-import filter from "../api/filter/filter.json";
+import filter from "../../components/filter/filter.json";
 import { useState } from "react";
 import BuyNow from "../../components/buy/BuyNow";
 const Deals = () => {
