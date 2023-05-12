@@ -7,12 +7,14 @@ import { IoMdCloudUpload } from "react-icons/io";
 import useWeb3 from "./useWeb3";
 import contract from "../../contracts/DealClient.json";
 import { useWeb3Contract, useMoralis } from "react-moralis";
+
 // import { CID } from "cids";
 const CID = require("cids");
 const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
 const contractABI = contract.abi;
 let cid;
 let dealParams;
+
 const UploadFile = (props) => {
   // const modalData = props.modalData;
 
@@ -26,7 +28,10 @@ const UploadFile = (props) => {
     endTime: "",
     isChecked: true,
   });
+  const [minEndDate, setMinEndDate] = useState(undefined);
   const [dealCid, setDealCid] = useState("");
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
   console.log(values);
   // const startDate = new Date(values.startTime);
@@ -44,6 +49,16 @@ const UploadFile = (props) => {
       setValues({ ...values, [name]: event.target.checked });
     }
   };
+  const startTimeHandler = (event) => {
+    const startTime = event.target.value;
+    setValues({ ...values, ["startTime"]: startTime });
+    if (startTime.length > 0) {
+      const startDate = new Date(startTime);
+      startDate.setMonth(startDate.getMonth() + 6);
+      setMinEndDate(startDate);
+    }
+  };
+  console.log(minEndDate);
   useEffect(() => {
     console.log(userAccount);
   }, [userAccount]);
@@ -448,14 +463,21 @@ const UploadFile = (props) => {
                   id="start-time"
                   type="date"
                   value={values.startTime}
-                  onChange={valueChangeHandler("startTime")}
+                  onChange={startTimeHandler}
+                  min={tomorrow.toISOString().split("T")[0]}
                 />
                 <label htmlFor="end-time">End Time</label>
                 <input
                   id="end-time"
                   type="date"
                   value={values.endTime}
+                  min={
+                    values.startTime.length > 0
+                      ? minEndDate.toISOString().split("T")[0]
+                      : undefined
+                  }
                   onChange={valueChangeHandler("endTime")}
+                  disabled={values.startTime.length === 0}
                 />
                 <div>
                   <input

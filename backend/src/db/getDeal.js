@@ -9,7 +9,7 @@ export const getDeal = async (owner) => {
     if (document) {
       return document.deals;
     } else {
-      return "no deals found";
+      return { error: "no deals found" };
     }
   } catch (error) {
     console.log(error);

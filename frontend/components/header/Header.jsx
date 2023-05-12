@@ -22,9 +22,9 @@ const Header = (props) => {
         {/* <Link href="/deals" className={activeClassName("/deals")}>
           Deals
         </Link> */}
-        <Link href="/offer" className={activeClassName("/offer")}>
+        {/* <Link href="/offer" className={activeClassName("/offer")}>
           Offer
-        </Link>
+        </Link> */}
         <Link href="/profile" className={activeClassName("/profile")}>
           Profile
         </Link>

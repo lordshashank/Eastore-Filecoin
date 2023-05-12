@@ -25,6 +25,7 @@
 .deals {
   padding: 1rem;
   width: 100%;
+  height: 100%;
   z-index: 10;
   padding: 1rem;
   background-color: #f7f7fc;
