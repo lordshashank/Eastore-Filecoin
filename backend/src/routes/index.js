@@ -8,6 +8,7 @@ import { checkPriceRoute } from "./checkPriceRoute";
 import { getMinerInfoRoute } from "./getMinerInfoRoute";
 import { postMinerInfoRoute } from "./postMinerInfoRoute";
 import { updateDealIdRoute } from "./updateDealIdRoute";
+import { helloRoute } from "./helloRoute";
 export const routes = [
   uploadRoute,
   saveDealRoute,
@@ -19,4 +20,5 @@ export const routes = [
   getMinerInfoRoute,
   postMinerInfoRoute,
   updateDealIdRoute,
+  helloRoute,
 ];
