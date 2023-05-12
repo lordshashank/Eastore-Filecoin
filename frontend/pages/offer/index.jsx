@@ -2,7 +2,7 @@ import Header from "../../components/header/Header";
 import classes from "../../styles/Offer.module.css";
 import MiddleCard from "../../components/ui/MiddleCard";
 import Card from "../../components/ui/Card";
-import filters from "../api/filter/filter.json";
+import filter from "../../components/filter/filter.json";
 import { useState, useEffect } from "react";
 import BuyNow from "../../components/buy/BuyNow";
 import { contractAddress, abi } from "../../constants";
