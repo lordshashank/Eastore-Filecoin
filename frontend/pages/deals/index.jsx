@@ -135,4 +135,4 @@ const Deals = () => {
   );
 };
 
-// export default Deals;
+export default Deals;
