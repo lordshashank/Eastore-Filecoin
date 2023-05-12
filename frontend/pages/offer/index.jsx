@@ -85,7 +85,7 @@ const Offer = () => {
           <h2>TODAY'S DEAL</h2>
           <h1>Full Sector Bounties</h1>
           <div className={classes.upper_list}>
-            {filters.map((data, index) => {
+            {filter.map((data, index) => {
               const MaxPieceSizeInMB = data.MaxPieceSize / (1024 * 1024);
               if (MaxPieceSizeInMB === 32768 || MaxPieceSizeInMB === 65536) {
                 return (
