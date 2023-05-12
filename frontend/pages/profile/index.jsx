@@ -51,7 +51,8 @@ function Profile() {
   const getDeals = async () => {
     console.log(account);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getDeals`,
+      // `${process.env.NEXT_PUBLIC_BACKEND_URL}/getDeals`,
+      "/api/getDeals",
       {
         method: "POST",
         body: JSON.stringify({
