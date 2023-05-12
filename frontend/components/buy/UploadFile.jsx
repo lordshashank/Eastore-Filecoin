@@ -316,85 +316,85 @@ const UploadFile = (props) => {
     // }, 15000);
   };
 
-  const dealIDButton = () => {
-    return <button onClick={dealIDHandler}>Get deal ID</button>;
-  };
-  const dealIDHandler = async () => {
-    // cid = new CID(
-    //   "baga6ea4seaqcjwtmhku7gbmbqgab3wo74ehsutypdx6wgtm4co7xduf54d2acli"
-    // );
-    // event.preventDefault();
-    // cid = new CID(dealCid);
-    // let finalDealId;
-    console.log(dealCid.string);
-    const cidBytes = dealCid.bytes;
-    console.log(cidBytes);
-    // return;
-    setDealID("Waiting for acceptance by SP...");
-    // cid = new CID(commP);
-    var refresh = setInterval(async () => {
-      console.log(cidBytes);
-      if (cid === undefined) {
-        setDealID("Error: CID not found");
-        clearInterval(refresh);
-      }
-      console.log("Checking for deal ID...");
-      // const dealID = await dealClient.pieceDeals(cid.bytes);
-      const parameters = {
-        abi: contractABI,
-        contractAddress: contractAddress,
-        functionName: "pieceDeals",
-        params: { "": cidBytes },
-      };
-      const result = await pieceDeals({
-        params: parameters,
-        onSuccess: () => {
-          console.log("success");
-        },
-        onError: (error) => {
-          console.log(error);
-        },
-      });
-      console.log(result);
-      const finalDealId = Number(result._hex);
-      console.log(finalDealId);
-      if (finalDealId !== undefined && finalDealId !== "0") {
-        // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
-        // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
-        setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
-        window.open(
-          `https://hyperspace.filfox.info/en/deal/${finalDealId}`,
-          "_blank"
-        );
-        if (userAccount && finalDealId) {
-          try {
-            const response = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/update-dealId`,
-              {
-                method: "POST",
-                // mode: "no-cors",
-                body: JSON.stringify({
-                  owner: userAccount,
-                  pieceCid: dealCid.string,
-                  dealId: finalDealId,
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                  // Accept: "application/json",
-                },
-              }
-            );
-            const resData = await response.json();
-            console.log(resData);
-            return resData;
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        clearInterval(refresh);
-      }
-    }, 5000);
-  };
+  // const dealIDButton = () => {
+  //   return <button onClick={dealIDHandler}>Get deal ID</button>;
+  // };
+  // const dealIDHandler = async () => {
+  //   // cid = new CID(
+  //   //   "baga6ea4seaqcjwtmhku7gbmbqgab3wo74ehsutypdx6wgtm4co7xduf54d2acli"
+  //   // );
+  //   // event.preventDefault();
+  //   // cid = new CID(dealCid);
+  //   // let finalDealId;
+  //   console.log(dealCid.string);
+  //   const cidBytes = dealCid.bytes;
+  //   console.log(cidBytes);
+  //   // return;
+  //   setDealID("Waiting for acceptance by SP...");
+  //   // cid = new CID(commP);
+  //   var refresh = setInterval(async () => {
+  //     console.log(cidBytes);
+  //     if (cid === undefined) {
+  //       setDealID("Error: CID not found");
+  //       clearInterval(refresh);
+  //     }
+  //     console.log("Checking for deal ID...");
+  //     // const dealID = await dealClient.pieceDeals(cid.bytes);
+  //     const parameters = {
+  //       abi: contractABI,
+  //       contractAddress: contractAddress,
+  //       functionName: "pieceDeals",
+  //       params: { "": cidBytes },
+  //     };
+  //     const result = await pieceDeals({
+  //       params: parameters,
+  //       onSuccess: () => {
+  //         console.log("success");
+  //       },
+  //       onError: (error) => {
+  //         console.log(error);
+  //       },
+  //     });
+  //     console.log(result);
+  //     const finalDealId = Number(result._hex);
+  //     console.log(finalDealId);
+  //     if (finalDealId !== undefined && finalDealId !== "0") {
+  //       // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
+  //       // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
+  //       setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
+  //       window.open(
+  //         `https://hyperspace.filfox.info/en/deal/${finalDealId}`,
+  //         "_blank"
+  //       );
+  //       if (userAccount && finalDealId) {
+  //         try {
+  //           const response = await fetch(
+  //             `${process.env.NEXT_PUBLIC_BACKEND_URL}/update-dealId`,
+  //             {
+  //               method: "POST",
+  //               // mode: "no-cors",
+  //               body: JSON.stringify({
+  //                 owner: userAccount,
+  //                 pieceCid: dealCid.string,
+  //                 dealId: finalDealId,
+  //               }),
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //                 // Accept: "application/json",
+  //               },
+  //             }
+  //           );
+  //           const resData = await response.json();
+  //           console.log(resData);
+  //           return resData;
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       }
+  //       clearInterval(refresh);
+  //     }
+  //   }, 5000);
+  // };
   useEffect(() => {
     if (isUploaded) {
       setTimeout(() => {
