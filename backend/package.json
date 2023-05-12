@@ -4,6 +4,9 @@
   "private": true,
   "description": "Examples for using the Lotus RPC API with `js-lotus-client`.",
   "main": "src/",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "nodemon --exec 'babel-node src/server.js'",
     "build": "tsc --build ./tsconfig.json",
