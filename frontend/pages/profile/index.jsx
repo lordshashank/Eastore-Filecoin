@@ -85,10 +85,12 @@ function Profile() {
   }
   useEffect(() => {
     let totalStorage1 = 0;
-    data.forEach((deal) => {
-      totalStorage1 += deal.pieceSize;
-    });
-    setTotalStorage(totalStorage1 / (1024 * 1024));
+    if (Array.isArray(data)) {
+      data.forEach((deal) => {
+        totalStorage1 += deal.pieceSize;
+      });
+      setTotalStorage(totalStorage1 / (1024 * 1024));
+    }
   }, [data]);
 
   const accountInfo = (
