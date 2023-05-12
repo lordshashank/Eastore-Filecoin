@@ -157,10 +157,13 @@ const UploadFile = (props) => {
       for (let i = 0; i < files.length; i++) {
         formData.append("files", files[i]);
       }
-      const response = await fetch("http://localhost:3001/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       const resData = await response.json();
       console.log(resData);
       if (response.status == 200) {
@@ -179,13 +182,16 @@ const UploadFile = (props) => {
       for (let i = 0; i < files.length; i++) {
         filesName.push(files[i].name);
       }
-      const response = await fetch("http://localhost:3001/buyDeal", {
-        method: "POST",
-        body: JSON.stringify({ filesName: filesName, miner: "t19920" }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/buyDeal`,
+        {
+          method: "POST",
+          body: JSON.stringify({ filesName: filesName, miner: "t19920" }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const resData = await response.json();
       dealParams = resData;
 
@@ -264,18 +270,21 @@ const UploadFile = (props) => {
       console.log(deal);
 
       filesName = [];
-      const dbResponse = await fetch("http://localhost:3001/sendDeal", {
-        method: "POST",
-        // mode: "no-cors",
-        body: JSON.stringify({
-          owner: userAccount,
-          deal: deal,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          // Accept: "application/json",
-        },
-      });
+      const dbResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/sendDeal`,
+        {
+          method: "POST",
+          // mode: "no-cors",
+          body: JSON.stringify({
+            owner: userAccount,
+            deal: deal,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            // Accept: "application/json",
+          },
+        }
+      );
       console.log(dbResponse);
       const dbResData = await dbResponse.json();
       console.log(dbResData);
@@ -360,7 +369,7 @@ const UploadFile = (props) => {
         if (userAccount && finalDealId) {
           try {
             const response = await fetch(
-              "http://localhost:3001/update-dealId",
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/update-dealId`,
               {
                 method: "POST",
                 // mode: "no-cors",

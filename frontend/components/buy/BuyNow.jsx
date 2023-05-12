@@ -31,14 +31,14 @@ const BuyNow = (props) => {
     console.log(userAccount);
   }, [userAccount]);
 
-  const Transfer = async () => {
-    const options = {
-      type: "native",
-      amount: Moralis.Units.ETH("0.0"),
-      receiver: "0x9299eac94952235Ae86b94122D2f7c77F7F6Ad30",
-    };
-    let result = await Moralis.transfer(options);
-  };
+  // const Transfer = async () => {
+  //   const options = {
+  //     type: "native",
+  //     amount: Moralis.Units.ETH("0.0"),
+  //     receiver: "0x9299eac94952235Ae86b94122D2f7c77F7F6Ad30",
+  //   };
+  //   let result = await Moralis.transfer(options);
+  // };
   function onDrag(e) {
     e.preventDefault();
     setDrag(true);

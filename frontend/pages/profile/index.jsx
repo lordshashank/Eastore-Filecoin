@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useEvmNativeBalance } from "@moralisweb3/next";
 import { networkConfig } from "../../helper.config";
 import CompletedDeals from "../../components/deals/CompletedDeals";
+
 // import { useMoralis } from "react-moralis";
 function Profile() {
   const {
@@ -49,15 +50,18 @@ function Profile() {
   }, []);
   const getDeals = async () => {
     console.log(account);
-    const response = await fetch("http://localhost:3001/getDeals", {
-      method: "POST",
-      body: JSON.stringify({
-        owner: account,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getDeals`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          owner: account,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const data = await response.json();
     console.log(data);
     setData(data);
@@ -80,16 +84,11 @@ function Profile() {
     return nativeBalance?.balance.ether;
   }
   useEffect(() => {
-    if (typeof data === String) {
-      console.log(data);
-      const jsonData = JSON.parse(data);
-      console.log(jsonData);
-      let totalStorage1 = 0;
-      jsonData.forEach((deal) => {
-        totalStorage1 += deal.pieceSize;
-      });
-      setTotalStorage(totalStorage1 / 1024);
-    }
+    let totalStorage1 = 0;
+    data.forEach((deal) => {
+      totalStorage1 += deal.pieceSize;
+    });
+    setTotalStorage(totalStorage1 / (1024 * 1024));
   }, [data]);
 
   const accountInfo = (
@@ -98,7 +97,7 @@ function Profile() {
         Account: <span className={classes.userAccount}>{account}</span>
       </h4>
       <h4>
-        BALANCE:{" "}
+        Token:{"  "}
         <span>
           {getPrice(account, chainId)}
           {""}
@@ -124,7 +123,7 @@ function Profile() {
             {account ? accountInfo : <h3>Connect to Wallet to See Details</h3>}
             {totalStorage && (
               <h4>
-                TOTAL STORAGE BOUGHT: <span>{totalStorage} KB</span>
+                TOTAL STORAGE BOUGHT: <span>{totalStorage} MB</span>
               </h4>
             )}
           </div>

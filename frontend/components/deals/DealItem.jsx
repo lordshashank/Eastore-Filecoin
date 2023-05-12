@@ -1,6 +1,6 @@
 import classes from "../../styles/CompletedDeals.module.css";
 import { useMoralis } from "react-moralis";
-import { useState } from "react";
+import { use, useState, useEffect } from "react";
 import contract from "../../contracts/DealClient.json";
 import { useWeb3Contract } from "react-moralis";
 import CID from "cids";
@@ -21,6 +21,8 @@ const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
 const DealItem = ({ deal }) => {
   const { account: userAccount } = useMoralis();
   const [loadingDeal, setLoadingDeal] = useState(false);
+  const [showStatus, setShowStatus] = useState(null);
+
   const { runContractFunction: pieceDeals } = useWeb3Contract({});
   const [dealId, setDealID] = useState("");
   const startDate = new Date(deal.startDate);
@@ -34,7 +36,7 @@ const DealItem = ({ deal }) => {
   } else if (today >= startDate && today <= endDate) {
     status = "active";
   } else if (today > oneMonthBeforeEnd && today <= endDate) {
-    status = "expiring";
+    status = "expiring soon";
   } else if (today > endDate) {
     status = "expired";
   }
@@ -49,13 +51,16 @@ const DealItem = ({ deal }) => {
     };
     try {
       const pieceData = data;
-      const response = await fetch("http://localhost:3001/retrieveDeal", {
-        method: "POST",
-        body: JSON.stringify(pieceData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/retrieveDeal`,
+        {
+          method: "POST",
+          body: JSON.stringify(pieceData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -81,12 +86,13 @@ const DealItem = ({ deal }) => {
     // console.log(cidBytes);
     // return;
     console.log(cid);
-    setDealID("Waiting for acceptance by SP...");
+    // setDealID("Waiting for acceptance by SP...");
     // cid = new CID(commP);
     // var refresh = setInterval(async () => {
     console.log(cidBytes);
     if (cid === undefined) {
-      setDealID("Error: CID not found");
+      // setDealID("Error: CID not found");
+      setShowStatus("Error: CID not found");
       // clearInterval(refresh);
       return;
     }
@@ -109,34 +115,38 @@ const DealItem = ({ deal }) => {
     });
     console.log(result);
     setLoadingDeal(false);
-    // const finalDealId = Number(result._hex);
-    const finalDealId = 0;
+    const finalDealId = Number(result._hex);
+    // const finalDealId = 0;
     console.log(finalDealId);
     if (finalDealId == undefined || finalDealId == "0") {
-      setDealID("Waiting for acceptance by SP...");
-      console.log("Waiting for acceptance by SP...");
+      // setDealID("Waiting for acceptance by SP...");
+      setShowStatus("Waiting for acceptance by SP...");
       return;
     }
 
     if (finalDealId !== undefined && finalDealId !== "0") {
       // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
       // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
+      setShowStatus("Deal ID found!");
       setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
       if (userAccount && finalDealId) {
         try {
-          const response = await fetch("http://localhost:3001/update-dealId", {
-            method: "POST",
-            // mode: "no-cors",
-            body: JSON.stringify({
-              owner: userAccount,
-              pieceCid: cid.string,
-              dealId: finalDealId,
-            }),
-            headers: {
-              "Content-Type": "application/json",
-              // Accept: "application/json",
-            },
-          });
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}update-dealId`,
+            {
+              method: "POST",
+              // mode: "no-cors",
+              body: JSON.stringify({
+                owner: userAccount,
+                pieceCid: cid.string,
+                dealId: finalDealId,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+                // Accept: "application/json",
+              },
+            }
+          );
           const resData = await response.json();
           console.log(resData);
           return resData;
@@ -149,9 +159,32 @@ const DealItem = ({ deal }) => {
     setLoadingDeal(false);
     // }, 5000);
   };
+  useEffect(() => {
+    if (showStatus !== null) {
+      setTimeout(() => {
+        setShowStatus(null);
+      }, 5000);
+    } else {
+      return;
+    }
+  }, [showStatus]);
   return (
     <div className={classes.deals_wraper}>
       <div className={classes.deals}>
+        {showStatus && (
+          <p
+            className={classes.upload_msg}
+            style={
+              showStatus == "Deal ID found!"
+                ? { color: "green" }
+                : showStatus == "Waiting for acceptance by SP..."
+                ? { color: "#A9A808" }
+                : { color: "red" }
+            }
+          >
+            {showStatus}
+          </p>
+        )}
         <div className={classes.details}>
           <div>
             <p>Filename:</p>
@@ -162,7 +195,17 @@ const DealItem = ({ deal }) => {
           </div>
           <div className={classes.values}>
             <p>{deal.fileName}</p>
-            <p>{status}</p>
+            <p
+              style={
+                status == "active"
+                  ? { color: "green" }
+                  : status == "upcoming"
+                  ? { color: "#A9A808" }
+                  : { color: "red" }
+              }
+            >
+              <b>{status}</b>
+            </p>
             <p
               style={{
                 display: "flex",
@@ -174,17 +217,17 @@ const DealItem = ({ deal }) => {
               {fileType}
             </p>
             <p>{deal.startDate}</p>
-            <p>{deal.pieceSize / (1024 * 1024)} MB</p>
+            <p>{deal.pieceSize / 1024} KB</p>
           </div>
         </div>
-        <button
+        {/* <button
           className={classes.button}
           onClick={() => {
             handleDownload(deal);
           }}
         >
           Download
-        </button>
+        </button> */}
         <button
           className={classes.button}
           onClick={() => {

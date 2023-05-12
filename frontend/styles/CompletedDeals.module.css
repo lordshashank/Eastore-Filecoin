@@ -1,5 +1,6 @@
 .deals_data {
   color: #fff;
+  /* max-width: 700px; */
 }
 .deals_data h2 {
   font-weight: 600;
@@ -28,7 +29,7 @@
   height: 100%;
   z-index: 10;
   padding: 1rem;
-  background-color: #f7f7fc;
+  background-color: #d9d9d9;
   border: 2px solid transparent;
 }
 
@@ -55,4 +56,18 @@
   -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.upload_msg {
+  background-color: #d9d9d9;
+  font-size: 1.2rem;
+  text-align: center;
+  animation: upload 1s;
+}
+@keyframes upload {
+  from {
+    transform: translateY(-40px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
