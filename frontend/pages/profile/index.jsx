@@ -51,13 +51,13 @@ function Profile() {
   const getDeals = async () => {
     console.log(account);
     const response = await fetch(
-      // `${process.env.NEXT_PUBLIC_BACKEND_URL}/getDeals`,
-      "/api/getDeals",
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/getDeals`,
       {
         method: "POST",
         body: JSON.stringify({
           owner: account,
         }),
+        // mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
