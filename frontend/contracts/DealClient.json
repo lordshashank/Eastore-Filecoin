@@ -18,7 +18,17 @@
     },
     {
       "inputs": [],
+      "name": "ActorNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "FailToCallActor",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAddress",
       "type": "error"
     },
     {
@@ -35,6 +45,11 @@
     {
       "inputs": [],
       "name": "InvalidResponseLength",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NegativeValueNotAllowed",
       "type": "error"
     },
     {
@@ -112,6 +127,19 @@
     },
     {
       "inputs": [],
+      "name": "DATACAP_ACTOR_ETH_ADDRESS",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "DATACAP_RECEIVER_HOOK_METHOD_NUM",
       "outputs": [
         {
@@ -150,19 +178,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "VERIFREG_ACTOR_ETH_ADDRESS",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -183,7 +198,7 @@
           "type": "bytes32"
         }
       ],
-      "name": "dealProposals",
+      "name": "dealRequestIdx",
       "outputs": [
         {
           "internalType": "uint256",
@@ -207,7 +222,7 @@
           "type": "uint256"
         }
       ],
-      "name": "deals",
+      "name": "dealRequests",
       "outputs": [
         {
           "internalType": "bytes",
@@ -453,7 +468,7 @@
           "components": [
             {
               "internalType": "bytes32",
-              "name": "proposalId",
+              "name": "requestId",
               "type": "bytes32"
             },
             {
@@ -462,7 +477,7 @@
               "type": "bool"
             }
           ],
-          "internalType": "struct ProposalIdSet",
+          "internalType": "struct RequestId",
           "name": "",
           "type": "tuple"
         }
@@ -702,11 +717,11 @@
           "type": "bytes"
         }
       ],
-      "name": "pieceToProposal",
+      "name": "pieceRequests",
       "outputs": [
         {
           "internalType": "bytes32",
-          "name": "proposalId",
+          "name": "requestId",
           "type": "bytes32"
         },
         {
@@ -716,6 +731,38 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "pieceStatus",
+      "outputs": [
+        {
+          "internalType": "enum DealClient.Status",
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "pieceCid",
+          "type": "bytes"
+        }
+      ],
+      "name": "updateActivationStatus",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -1724,72 +1771,28 @@
     "absolutePath": "src/DealClient.sol",
     "id": 32771,
     "exportedSymbols": {
-      "AccountCBOR": [
-        25040
-      ],
-      "AccountTypes": [
-        29837
-      ],
-      "BigNumbers": [
-        28544
-      ],
-      "BytesCBOR": [
-        25480
-      ],
-      "CBOR": [
-        29824
-      ],
-      "CommonTypes": [
-        29875
-      ],
-      "DealClient": [
-        32770
-      ],
-      "DealRequest": [
-        31913
-      ],
-      "ExtraParamsV1": [
-        31922
-      ],
-      "FilAddresses": [
-        31740
-      ],
-      "MarketAPI": [
-        24925
-      ],
-      "MarketCBOR": [
-        26547
-      ],
-      "MarketDealNotifyParams": [
-        32807
-      ],
-      "MarketTypes": [
-        30007
-      ],
-      "Misc": [
-        31839
-      ],
-      "ProposalIdSet": [
-        31879
-      ],
-      "ProposalIdx": [
-        31884
-      ],
-      "ProviderSet": [
-        31889
-      ],
-      "deserializeDealProposal": [
-        33213
-      ],
-      "deserializeMarketDealNotifyParams": [
-        32860
-      ],
-      "serializeDealProposal": [
-        32980
-      ],
-      "serializeExtraParamsV1": [
-        31979
-      ]
+      "AccountCBOR": [25040],
+      "AccountTypes": [29837],
+      "BigNumbers": [28544],
+      "BytesCBOR": [25480],
+      "CBOR": [29824],
+      "CommonTypes": [29875],
+      "DealClient": [32770],
+      "DealRequest": [31913],
+      "ExtraParamsV1": [31922],
+      "FilAddresses": [31740],
+      "MarketAPI": [24925],
+      "MarketCBOR": [26547],
+      "MarketDealNotifyParams": [32807],
+      "MarketTypes": [30007],
+      "Misc": [31839],
+      "ProposalIdSet": [31879],
+      "ProposalIdx": [31884],
+      "ProviderSet": [31889],
+      "deserializeDealProposal": [33213],
+      "deserializeMarketDealNotifyParams": [32860],
+      "serializeDealProposal": [32980],
+      "serializeExtraParamsV1": [31979]
     },
     "nodeType": "SourceUnit",
     "src": "39:12216:31",
@@ -1799,12 +1802,7 @@
         "nodeType": "PragmaDirective",
         "src": "39:24:31",
         "nodes": [],
-        "literals": [
-          "solidity",
-          "^",
-          "0.8",
-          ".17"
-        ]
+        "literals": ["solidity", "^", "0.8", ".17"]
       },
       {
         "id": 31843,
@@ -2189,9 +2187,7 @@
         "libraryName": {
           "id": 31871,
           "name": "CBOR",
-          "nameLocations": [
-            "1272:4:31"
-          ],
+          "nameLocations": ["1272:4:31"],
           "nodeType": "IdentifierPath",
           "referencedDeclaration": 29824,
           "src": "1272:4:31"
@@ -2202,10 +2198,7 @@
           "pathNode": {
             "id": 31872,
             "name": "CBOR.CBORBuffer",
-            "nameLocations": [
-              "1281:4:31",
-              "1286:10:31"
-            ],
+            "nameLocations": ["1281:4:31", "1286:10:31"],
             "nodeType": "IdentifierPath",
             "referencedDeclaration": 28979,
             "src": "1281:15:31"
@@ -2717,9 +2710,7 @@
               "pathNode": {
                 "id": 31910,
                 "name": "ExtraParamsV1",
-                "nameLocations": [
-                  "1981:13:31"
-                ],
+                "nameLocations": ["1981:13:31"],
                 "nodeType": "IdentifierPath",
                 "referencedDeclaration": 31922,
                 "src": "1981:13:31"
@@ -2872,9 +2863,7 @@
           "nodes": [],
           "statements": [
             {
-              "assignments": [
-                31934
-              ],
+              "assignments": [31934],
               "declarations": [
                 {
                   "constant": false,
@@ -2897,10 +2886,7 @@
                     "pathNode": {
                       "id": 31932,
                       "name": "CBOR.CBORBuffer",
-                      "nameLocations": [
-                        "2368:4:31",
-                        "2373:10:31"
-                      ],
+                      "nameLocations": ["2368:4:31", "2373:10:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 28979,
                       "src": "2368:15:31"
@@ -3491,9 +3477,7 @@
                 "pathNode": {
                   "id": 31923,
                   "name": "ExtraParamsV1",
-                  "nameLocations": [
-                    "2304:13:31"
-                  ],
+                  "nameLocations": ["2304:13:31"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 31922,
                   "src": "2304:13:31"
@@ -3563,9 +3547,7 @@
             "libraryName": {
               "id": 31980,
               "name": "AccountCBOR",
-              "nameLocations": [
-                "2674:11:31"
-              ],
+              "nameLocations": ["2674:11:31"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 25040,
               "src": "2674:11:31"
@@ -3580,9 +3562,7 @@
             "libraryName": {
               "id": 31982,
               "name": "MarketCBOR",
-              "nameLocations": [
-                "2703:10:31"
-              ],
+              "nameLocations": ["2703:10:31"],
               "nodeType": "IdentifierPath",
               "referencedDeclaration": 26547,
               "src": "2703:10:31"
@@ -3946,9 +3926,7 @@
                 "pathNode": {
                   "id": 32006,
                   "name": "ProposalIdx",
-                  "nameLocations": [
-                    "3198:11:31"
-                  ],
+                  "nameLocations": ["3198:11:31"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 31884,
                   "src": "3198:11:31"
@@ -4004,9 +3982,7 @@
                 "pathNode": {
                   "id": 32011,
                   "name": "ProposalIdSet",
-                  "nameLocations": [
-                    "3288:13:31"
-                  ],
+                  "nameLocations": ["3288:13:31"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 31879,
                   "src": "3288:13:31"
@@ -4062,9 +4038,7 @@
                 "pathNode": {
                   "id": 32016,
                   "name": "ProviderSet",
-                  "nameLocations": [
-                    "3375:11:31"
-                  ],
+                  "nameLocations": ["3375:11:31"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 31889,
                   "src": "3375:11:31"
@@ -4151,9 +4125,7 @@
                 "pathNode": {
                   "id": 32024,
                   "name": "DealRequest",
-                  "nameLocations": [
-                    "3504:11:31"
-                  ],
+                  "nameLocations": ["3504:11:31"],
                   "nodeType": "IdentifierPath",
                   "referencedDeclaration": 31913,
                   "src": "3504:11:31"
@@ -4593,9 +4565,7 @@
                     "pathNode": {
                       "id": 32056,
                       "name": "ProviderSet",
-                      "nameLocations": [
-                        "3882:11:31"
-                      ],
+                      "nameLocations": ["3882:11:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 31889,
                       "src": "3882:11:31"
@@ -4738,9 +4708,7 @@
                     "pathNode": {
                       "id": 32069,
                       "name": "ProposalIdSet",
-                      "nameLocations": [
-                        "4032:13:31"
-                      ],
+                      "nameLocations": ["4032:13:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 31879,
                       "src": "4032:13:31"
@@ -4980,9 +4948,7 @@
                     "pathNode": {
                       "id": 32091,
                       "name": "DealRequest",
-                      "nameLocations": [
-                        "4273:11:31"
-                      ],
+                      "nameLocations": ["4273:11:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 31913,
                       "src": "4273:11:31"
@@ -5086,10 +5052,7 @@
                       "id": 32108,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "4482:7:31",
                       "typeDescriptions": {
@@ -5118,9 +5081,7 @@
                   "src": "4482:28:31"
                 },
                 {
-                  "assignments": [
-                    32116
-                  ],
+                  "assignments": [32116],
                   "declarations": [
                     {
                       "constant": false,
@@ -5251,9 +5212,7 @@
                   "src": "4559:16:31"
                 },
                 {
-                  "assignments": [
-                    32127
-                  ],
+                  "assignments": [32127],
                   "declarations": [
                     {
                       "constant": false,
@@ -5917,9 +5876,7 @@
                     "pathNode": {
                       "id": 32101,
                       "name": "DealRequest",
-                      "nameLocations": [
-                        "4370:11:31"
-                      ],
+                      "nameLocations": ["4370:11:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 31913,
                       "src": "4370:11:31"
@@ -5987,9 +5944,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    32181
-                  ],
+                  "assignments": [32181],
                   "declarations": [
                     {
                       "constant": false,
@@ -6012,9 +5967,7 @@
                         "pathNode": {
                           "id": 32179,
                           "name": "ProposalIdx",
-                          "nameLocations": [
-                            "5314:11:31"
-                          ],
+                          "nameLocations": ["5314:11:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 31884,
                           "src": "5314:11:31"
@@ -6132,10 +6085,7 @@
                       "id": 32186,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "5373:7:31",
                       "typeDescriptions": {
@@ -6288,9 +6238,7 @@
                     "pathNode": {
                       "id": 32175,
                       "name": "DealRequest",
-                      "nameLocations": [
-                        "5284:11:31"
-                      ],
+                      "nameLocations": ["5284:11:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 31913,
                       "src": "5284:11:31"
@@ -6324,9 +6272,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    32207
-                  ],
+                  "assignments": [32207],
                   "declarations": [
                     {
                       "constant": false,
@@ -6349,9 +6295,7 @@
                         "pathNode": {
                           "id": 32205,
                           "name": "DealRequest",
-                          "nameLocations": [
-                            "5610:11:31"
-                          ],
+                          "nameLocations": ["5610:11:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 31913,
                           "src": "5610:11:31"
@@ -6420,9 +6364,7 @@
                   "src": "5610:52:31"
                 },
                 {
-                  "assignments": [
-                    32216
-                  ],
+                  "assignments": [32216],
                   "declarations": [
                     {
                       "constant": false,
@@ -6445,10 +6387,7 @@
                         "pathNode": {
                           "id": 32214,
                           "name": "MarketTypes.DealProposal",
-                          "nameLocations": [
-                            "5673:11:31",
-                            "5685:12:31"
-                          ],
+                          "nameLocations": ["5673:11:31", "5685:12:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 30000,
                           "src": "5673:24:31"
@@ -7920,10 +7859,7 @@
                     "pathNode": {
                       "id": 32319,
                       "name": "CommonTypes.FilAddress",
-                      "nameLocations": [
-                        "6642:11:31",
-                        "6654:10:31"
-                      ],
+                      "nameLocations": ["6642:11:31", "6654:10:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 29869,
                       "src": "6642:22:31"
@@ -7957,9 +7893,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    32342
-                  ],
+                  "assignments": [32342],
                   "declarations": [
                     {
                       "constant": false,
@@ -7982,9 +7916,7 @@
                         "pathNode": {
                           "id": 32340,
                           "name": "DealRequest",
-                          "nameLocations": [
-                            "6876:11:31"
-                          ],
+                          "nameLocations": ["6876:11:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 31913,
                           "src": "6876:11:31"
@@ -8306,10 +8238,7 @@
                       "id": 32358,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "7073:7:31",
                       "typeDescriptions": {
@@ -8338,9 +8267,7 @@
                   "src": "7073:124:31"
                 },
                 {
-                  "assignments": [
-                    32370
-                  ],
+                  "assignments": [32370],
                   "declarations": [
                     {
                       "constant": false,
@@ -8363,10 +8290,7 @@
                         "pathNode": {
                           "id": 32368,
                           "name": "AccountTypes.AuthenticateMessageParams",
-                          "nameLocations": [
-                            "7208:12:31",
-                            "7221:25:31"
-                          ],
+                          "nameLocations": ["7208:12:31", "7221:25:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 29836,
                           "src": "7208:38:31"
@@ -8433,9 +8357,7 @@
                   "src": "7208:110:31"
                 },
                 {
-                  "assignments": [
-                    32379
-                  ],
+                  "assignments": [32379],
                   "declarations": [
                     {
                       "constant": false,
@@ -8458,10 +8380,7 @@
                         "pathNode": {
                           "id": 32377,
                           "name": "MarketTypes.DealProposal",
-                          "nameLocations": [
-                            "7328:11:31",
-                            "7340:12:31"
-                          ],
+                          "nameLocations": ["7328:11:31", "7340:12:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 30000,
                           "src": "7328:24:31"
@@ -8546,9 +8465,7 @@
                   "src": "7328:101:31"
                 },
                 {
-                  "assignments": [
-                    32386
-                  ],
+                  "assignments": [32386],
                   "declarations": [
                     {
                       "constant": false,
@@ -8713,10 +8630,7 @@
                       "id": 32391,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "7497:7:31",
                       "typeDescriptions": {
@@ -8846,10 +8760,7 @@
                       "id": 32399,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "7593:7:31",
                       "typeDescriptions": {
@@ -8878,9 +8789,7 @@
                   "src": "7593:103:31"
                 },
                 {
-                  "assignments": [
-                    32410
-                  ],
+                  "assignments": [32410],
                   "declarations": [
                     {
                       "constant": false,
@@ -8903,9 +8812,7 @@
                         "pathNode": {
                           "id": 32408,
                           "name": "DealRequest",
-                          "nameLocations": [
-                            "7707:11:31"
-                          ],
+                          "nameLocations": ["7707:11:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 31913,
                           "src": "7707:11:31"
@@ -9122,10 +9029,7 @@
                       "id": 32418,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "7794:7:31",
                       "typeDescriptions": {
@@ -9298,10 +9202,7 @@
                       "id": 32427,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "7888:7:31",
                       "typeDescriptions": {
@@ -9474,10 +9375,7 @@
                       "id": 32438,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "8029:7:31",
                       "typeDescriptions": {
@@ -9659,10 +9557,7 @@
                       "id": 32455,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "8225:7:31",
                       "typeDescriptions": {
@@ -9691,9 +9586,7 @@
                   "src": "8225:124:31"
                 },
                 {
-                  "assignments": [
-                    32465
-                  ],
+                  "assignments": [32465],
                   "declarations": [
                     {
                       "constant": false,
@@ -9716,9 +9609,7 @@
                         "pathNode": {
                           "id": 32463,
                           "name": "MarketDealNotifyParams",
-                          "nameLocations": [
-                            "8360:22:31"
-                          ],
+                          "nameLocations": ["8360:22:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 32807,
                           "src": "8360:22:31"
@@ -9787,9 +9678,7 @@
                   "src": "8360:100:31"
                 },
                 {
-                  "assignments": [
-                    32474
-                  ],
+                  "assignments": [32474],
                   "declarations": [
                     {
                       "constant": false,
@@ -9812,10 +9701,7 @@
                         "pathNode": {
                           "id": 32472,
                           "name": "MarketTypes.DealProposal",
-                          "nameLocations": [
-                            "8470:11:31",
-                            "8482:12:31"
-                          ],
+                          "nameLocations": ["8470:11:31", "8482:12:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 30000,
                           "src": "8470:24:31"
@@ -10018,10 +9904,7 @@
                       "id": 32480,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "8588:7:31",
                       "typeDescriptions": {
@@ -10183,10 +10066,7 @@
                       "id": 32490,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "8733:7:31",
                       "typeDescriptions": {
@@ -10653,10 +10533,7 @@
                       "id": 32529,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "9309:7:31",
                       "typeDescriptions": {
@@ -10917,9 +10794,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    32561
-                  ],
+                  "assignments": [32561],
                   "declarations": [
                     {
                       "constant": false,
@@ -10942,10 +10817,7 @@
                         "pathNode": {
                           "id": 32559,
                           "name": "BigNumbers.BigNumber",
-                          "nameLocations": [
-                            "9588:10:31",
-                            "9599:9:31"
-                          ],
+                          "nameLocations": ["9588:10:31", "9599:9:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 26569,
                           "src": "9588:20:31"
@@ -11050,9 +10922,7 @@
                   "src": "9588:69:31"
                 },
                 {
-                  "assignments": [
-                    32572
-                  ],
+                  "assignments": [32572],
                   "declarations": [
                     {
                       "constant": false,
@@ -11075,10 +10945,7 @@
                         "pathNode": {
                           "id": 32570,
                           "name": "CommonTypes.BigInt",
-                          "nameLocations": [
-                            "9667:11:31",
-                            "9679:6:31"
-                          ],
+                          "nameLocations": ["9667:11:31", "9679:6:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 29866,
                           "src": "9667:18:31"
@@ -11294,10 +11161,7 @@
                     "pathNode": {
                       "id": 32553,
                       "name": "CommonTypes.BigInt",
-                      "nameLocations": [
-                        "9551:11:31",
-                        "9563:6:31"
-                      ],
+                      "nameLocations": ["9551:11:31", "9563:6:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 29866,
                       "src": "9551:18:31"
@@ -11331,9 +11195,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    32596
-                  ],
+                  "assignments": [32596],
                   "declarations": [
                     {
                       "constant": false,
@@ -11356,10 +11218,7 @@
                         "pathNode": {
                           "id": 32594,
                           "name": "BigNumbers.BigNumber",
-                          "nameLocations": [
-                            "9938:10:31",
-                            "9949:9:31"
-                          ],
+                          "nameLocations": ["9938:10:31", "9949:9:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 26569,
                           "src": "9938:20:31"
@@ -11492,9 +11351,7 @@
                   "src": "9938:114:31"
                 },
                 {
-                  "assignments": [
-                    32606
-                  ],
+                  "assignments": [32606],
                   "declarations": [
                     {
                       "constant": false,
@@ -11696,10 +11553,7 @@
                     "pathNode": {
                       "id": 32585,
                       "name": "CommonTypes.BigInt",
-                      "nameLocations": [
-                        "9857:11:31",
-                        "9869:6:31"
-                      ],
+                      "nameLocations": ["9857:11:31", "9869:6:31"],
                       "nodeType": "IdentifierPath",
                       "referencedDeclaration": 29866,
                       "src": "9857:18:31"
@@ -11837,10 +11691,7 @@
                       "id": 32628,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "10654:7:31",
                       "typeDescriptions": {
@@ -11869,9 +11720,7 @@
                   "src": "10654:28:31"
                 },
                 {
-                  "assignments": [
-                    32639
-                  ],
+                  "assignments": [32639],
                   "declarations": [
                     {
                       "constant": false,
@@ -11894,10 +11743,7 @@
                         "pathNode": {
                           "id": 32637,
                           "name": "MarketTypes.WithdrawBalanceParams",
-                          "nameLocations": [
-                            "10693:11:31",
-                            "10705:21:31"
-                          ],
+                          "nameLocations": ["10693:11:31", "10705:21:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 29937,
                           "src": "10693:33:31"
@@ -12072,9 +11918,7 @@
                   "src": "10693:192:31"
                 },
                 {
-                  "assignments": [
-                    32654
-                  ],
+                  "assignments": [32654],
                   "declarations": [
                     {
                       "constant": false,
@@ -12097,10 +11941,7 @@
                         "pathNode": {
                           "id": 32652,
                           "name": "CommonTypes.BigInt",
-                          "nameLocations": [
-                            "10895:11:31",
-                            "10907:6:31"
-                          ],
+                          "nameLocations": ["10895:11:31", "10907:6:31"],
                           "nodeType": "IdentifierPath",
                           "referencedDeclaration": 29866,
                           "src": "10895:18:31"
@@ -12450,10 +12291,7 @@
                       "id": 32670,
                       "name": "require",
                       "nodeType": "Identifier",
-                      "overloadedDeclarations": [
-                        -18,
-                        -18
-                      ],
+                      "overloadedDeclarations": [-18, -18],
                       "referencedDeclaration": -18,
                       "src": "11072:7:31",
                       "typeDescriptions": {
@@ -12603,9 +12441,7 @@
               "nodes": [],
               "statements": [
                 {
-                  "assignments": [
-                    32699
-                  ],
+                  "assignments": [32699],
                   "declarations": [
                     {
                       "constant": false,
@@ -12640,9 +12476,7 @@
                   "src": "11490:16:31"
                 },
                 {
-                  "assignments": [
-                    32702
-                  ],
+                  "assignments": [32702],
                   "declarations": [
                     {
                       "constant": false,
@@ -12840,10 +12674,7 @@
                                 "id": 32755,
                                 "name": "revert",
                                 "nodeType": "Identifier",
-                                "overloadedDeclarations": [
-                                  -19,
-                                  -19
-                                ],
+                                "overloadedDeclarations": [-19, -19],
                                 "referencedDeclaration": -19,
                                 "src": "12143:6:31",
                                 "typeDescriptions": {
@@ -13066,9 +12897,7 @@
                         "src": "11627:27:31"
                       },
                       {
-                        "assignments": [
-                          32715
-                        ],
+                        "assignments": [32715],
                         "declarations": [
                           {
                             "constant": false,
@@ -13091,10 +12920,7 @@
                               "pathNode": {
                                 "id": 32713,
                                 "name": "CBOR.CBORBuffer",
-                                "nameLocations": [
-                                  "11774:4:31",
-                                  "11779:10:31"
-                                ],
+                                "nameLocations": ["11774:4:31", "11779:10:31"],
                                 "nodeType": "IdentifierPath",
                                 "referencedDeclaration": 28979,
                                 "src": "11774:15:31"
@@ -13654,19 +13480,11 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "linearizedBaseContracts": [
-          32770
-        ],
+        "linearizedBaseContracts": [32770],
         "name": "DealClient",
         "nameLocation": "2651:10:31",
         "scope": 32771,
-        "usedErrors": [
-          30040,
-          30049,
-          30052,
-          30057,
-          30062
-        ]
+        "usedErrors": [30040, 30049, 30052, 30057, 30062]
       }
     ],
     "license": "UNLICENSED"

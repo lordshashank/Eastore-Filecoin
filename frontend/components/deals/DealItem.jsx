@@ -80,23 +80,23 @@ const DealItem = ({ deal }) => {
     // event.preventDefault();
     // cid = new CID(dealCid);
     // let finalDealId;
-    console.log(cid.string);
+    // console.log(cid.string);
     const cidBytes = cid.bytes;
     // const cidBytes = cid.bytes;
     // console.log(cidBytes);
     // return;
-    console.log(cid);
+    // console.log(cid);
     // setDealID("Waiting for acceptance by SP...");
     // cid = new CID(commP);
     // var refresh = setInterval(async () => {
-    console.log(cidBytes);
+    // console.log(cidBytes);
     if (cid === undefined) {
       // setDealID("Error: CID not found");
       setShowStatus("Error: CID not found");
       // clearInterval(refresh);
       return;
     }
-    console.log("Checking for deal ID...");
+    // console.log("Checking for deal ID...");
     // const dealID = await dealClient.pieceDeals(cid.bytes);
     const parameters = {
       abi: contract.abi,
@@ -119,7 +119,8 @@ const DealItem = ({ deal }) => {
     // const finalDealId = 0;
     console.log(finalDealId);
     if (finalDealId == undefined || finalDealId == "0") {
-      // setDealID("Waiting for acceptance by SP...");
+      //to be removed afterwards
+      setDealID("Waiting for acceptance by SP...");
       setShowStatus("Waiting for acceptance by SP...");
       return;
     }
@@ -171,7 +172,7 @@ const DealItem = ({ deal }) => {
   return (
     <div className={classes.deals_wraper}>
       <div className={classes.deals}>
-        {showStatus && (
+        {/* {showStatus && (
           <p
             className={classes.upload_msg}
             style={
@@ -184,7 +185,7 @@ const DealItem = ({ deal }) => {
           >
             {showStatus}
           </p>
-        )}
+        )} */}
         <div className={classes.details}>
           <div>
             <p>Filename:</p>
@@ -231,7 +232,7 @@ const DealItem = ({ deal }) => {
         <button
           className={classes.button}
           onClick={() => {
-            console.log(deal.pieceCid);
+            // console.log(deal.pieceCid);
             const cid = new CID(deal.pieceCid);
             dealIDHandler(cid);
           }}
@@ -246,10 +247,11 @@ const DealItem = ({ deal }) => {
         {dealId && !loadingDeal && (
           <a
             style={{ display: "block", marginTop: "1rem" }}
-            href={dealId}
+            // href={dealId}
+            href="https://hyperspace.filfox.info/en/deal"
             target="_blank"
           >
-            See your deal
+            View deal
           </a>
         )}
       </div>

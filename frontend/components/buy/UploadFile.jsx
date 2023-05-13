@@ -10,7 +10,7 @@ import { useWeb3Contract, useMoralis } from "react-moralis";
 
 // import { CID } from "cids";
 const CID = require("cids");
-const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
+const contractAddress = "0x61cc1d3A77c855689327626034d6B3aD2B511458";
 const contractABI = contract.abi;
 let cid;
 let dealParams;
@@ -33,7 +33,7 @@ const UploadFile = (props) => {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  console.log(values);
+  // console.log(values);
   // const startDate = new Date(values.startTime);
   // const startTime = startDate.getTime() / 1000;
   // console.log(startTime);
@@ -58,9 +58,9 @@ const UploadFile = (props) => {
       setMinEndDate(startDate);
     }
   };
-  console.log(minEndDate);
+  // console.log(minEndDate);
   useEffect(() => {
-    console.log(userAccount);
+    // console.log(userAccount);
   }, [userAccount]);
 
   // const Transfer = async () => {
@@ -150,7 +150,7 @@ const UploadFile = (props) => {
     // } catch (error) {
     //   console.log(error);
     // }
-    console.log(userAccount);
+    // console.log(userAccount);
     let deal;
     try {
       const formData = new FormData();
@@ -195,26 +195,26 @@ const UploadFile = (props) => {
       const resData = await response.json();
       dealParams = resData;
 
-      console.log(dealParams);
+      // console.log(dealParams);
 
       const commP = dealParams["pieceCid"];
-      console.log(commP);
+      // console.log(commP);
       // setDealCid(commP);
 
       cid = new CID(commP);
       setDealCid(cid);
       const genesisDate = new Date("2023-01-13");
       const genesisTime = genesisDate.getTime() / 1000;
-      console.log(genesisTime);
+      // console.log(genesisTime);
       const startDate = new Date(values.startTime);
       const startTime = startDate.getTime() / 1000;
-      console.log(startTime);
+      // console.log(startTime);
       const endDate = new Date(values.endTime);
       const endTime = endDate.getTime() / 1000;
-      console.log(endTime);
+      // console.log(endTime);
       const startEpoch = Math.floor((startTime - genesisTime) / 30) + 2000;
       const endEpoch = Math.floor((endTime - genesisTime) / 30) + 2000;
-      console.log(startEpoch, "to", endEpoch);
+      // console.log(startEpoch, "to", endEpoch);
       const extraParamsV1 = [
         dealParams.carLink,
         dealParams.carSize, //carSize,
@@ -235,7 +235,7 @@ const UploadFile = (props) => {
         1, //taskArgs.extraParamsVersion,
         extraParamsV1,
       ];
-      console.log(DealRequestStruct);
+      // console.log(DealRequestStruct);
       const parameters = {
         abi: contractABI,
         contractAddress: contractAddress,
@@ -268,27 +268,29 @@ const UploadFile = (props) => {
         verifiedDeal: false,
         keepUnsealedCopy: values.isChecked,
       };
-      console.log(deal);
+      // console.log(deal);
 
       filesName = [];
-      const dbResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/sendDeal`,
-        {
-          method: "POST",
-          // mode: "no-cors",
-          body: JSON.stringify({
-            owner: userAccount,
-            deal: deal,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            // Accept: "application/json",
-          },
-        }
-      );
-      console.log(dbResponse);
-      const dbResData = await dbResponse.json();
-      console.log(dbResData);
+      if (result && result.transactionHash && userAccount) {
+        const dbResponse = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/sendDeal`,
+          {
+            method: "POST",
+            // mode: "no-cors",
+            body: JSON.stringify({
+              owner: userAccount,
+              deal: deal,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              // Accept: "application/json",
+            },
+          }
+        );
+        // console.log(dbResponse);
+        const dbResData = await dbResponse.json();
+        console.log(dbResData);
+      }
     } catch (error) {
       console.log(error);
     }
