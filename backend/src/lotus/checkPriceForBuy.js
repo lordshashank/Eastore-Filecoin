@@ -11,8 +11,8 @@ export const checkPrice = async (fileName) => {
   try {
     // unlinkSync(uploadedFile);
     // unlinkSync(carFile);
-    let uploadedFile = `/${__dirname}/../uploads/${fileName}`;
-    let carFile = `/${__dirname}/../uploadsCar/${fileName}.car`;
+    let uploadedFile = `${__dirname}/../uploads/${fileName}`;
+    // let carFile = `/${__dirname}/../uploadsCar/${fileName}.car`;
     const apiKey = LIGHTHOUSE_API_KEY; //generate from https://files.lighthouse.storage/ or cli (lighthouse-web3 api-key --new)
     const authToken = await lighthouse.dataDepotAuth(apiKey);
     let response = await lighthouse.viewCarFiles(

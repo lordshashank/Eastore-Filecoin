@@ -57,6 +57,7 @@ function Profile() {
         body: JSON.stringify({
           owner: account,
         }),
+        // mode: "no-cors",
         headers: {
           "Content-Type": "application/json",
         },
