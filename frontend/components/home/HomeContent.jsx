@@ -20,11 +20,21 @@ const HomeContent = () => {
           directly to the Filecoin network using smart contracts completely
           on-chain. This is a nominal version of Eastore in hyperspace testnet.
           you can try it out by uploading a file by clicking on button below.
+          <br />
+          <br />
+          Add hyperspace net to you metamask{" "}
+          <a
+            href="https://chainlist.org/?search=hyperspace&testnets=true"
+            target="_blank"
+          >
+            here
+          </a>
           <br /> Want some fil tokens?{" "}
           <a href="https://hyperspace.yoga/#faucet" target="_blank">
             Click here
           </a>{" "}
           to get some.
+          <br />
           <br />
           <span className={classes["highlight-text"]}>
             {" "}
