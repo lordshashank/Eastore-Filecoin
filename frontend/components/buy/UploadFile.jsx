@@ -271,7 +271,7 @@ const UploadFile = (props) => {
       // console.log(deal);
 
       filesName = [];
-      if (result && result.transactionHash && userAccount) {
+      if (result) {
         const dbResponse = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/sendDeal`,
           {
