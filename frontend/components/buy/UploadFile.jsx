@@ -252,6 +252,7 @@ const UploadFile = (props) => {
         },
       });
       console.log(result);
+      if (result == "undefined") return;
       // save in database;
       deal = {
         id: dealParams.id,
