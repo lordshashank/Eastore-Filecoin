@@ -1,20 +1,20 @@
 {
-  "name": "js-lotus-client-examples",
+  "name": "eastore-backend",
   "version": "0.0.0",
   "private": true,
-  "description": "Examples for using the Lotus RPC API with `js-lotus-client`.",
+  "description": "Backend for eastore",
   "main": "src/",
   "engines": {
     "node": "18.x"
   },
   "scripts": {
-    "start": "nodemon --exec 'babel-node src/server.js'",
+    "start": "babel-node src/server.js",
     "build": "tsc --build ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start1": "nodemon app.js",
     "start-server": "node app.js"
   },
-  "author": "Alan Shaw",
+  "author": "Lordforever",
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.11.18",
