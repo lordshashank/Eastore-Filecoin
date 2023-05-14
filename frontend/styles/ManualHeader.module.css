@@ -14,6 +14,12 @@
   color: #fff;
   background-color: #000;
 }
+
+.button:disabled {
+  cursor: not-allowed;
+  background-color: #aaa;
+  color: #000;
+}
 @media (width <= 500px) {
   .button {
     padding: 1vmax;
