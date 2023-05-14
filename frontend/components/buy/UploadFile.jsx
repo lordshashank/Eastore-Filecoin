@@ -43,6 +43,9 @@ const UploadFile = (props) => {
   const { runContractFunction: makeDealProposal } = useWeb3Contract({});
   const { runContractFunction: pieceDeals } = useWeb3Contract({});
 
+  const isBuyDisabled =
+    values.startTime.length === 0 || values.endTime === 0 || files.length === 0;
+
   const valueChangeHandler = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
     if (name === "isChecked") {
@@ -578,6 +581,7 @@ const UploadFile = (props) => {
           <div className={classes["buy-button-box"]}>
             <button
               className={classes["buy-button"]}
+              disabled={isBuyDisabled}
               onClick={async (e) => {
                 if (isLoading) return;
                 e.preventDefault();
