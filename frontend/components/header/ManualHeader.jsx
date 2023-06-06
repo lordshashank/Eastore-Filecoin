@@ -6,6 +6,11 @@ const ManualHeader = (props) => {
   const buttonClassName = props.buttonClassName;
   const { enableWeb3, isWeb3EnableLoading, account, Moralis, deactivateWeb3 } =
     useMoralis();
+  const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false);
+
+  useEffect(() => {
+    setIsMetamaskInstalled(Boolean(window.ethereum));
+  }, []);
 
   useEffect(() => {
     Moralis.onAccountChanged((account) => {
@@ -33,6 +38,10 @@ const ManualHeader = (props) => {
     }
   };
   const activateConnectButton = async () => {
+    if (!isMetamaskInstalled) {
+      window.open("https://metamask.io/download.html", "_blank");
+      return;
+    }
     const ret = await enableWeb3();
     if (typeof ret !== "undefined") {
       if (typeof window !== "undefined") {

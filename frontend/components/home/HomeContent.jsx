@@ -3,8 +3,10 @@ import classes from "../../styles/Home.module.css";
 import styles from "../../styles/ManualHeader.module.css";
 import ManualHeader from "../header/ManualHeader";
 import UploadFile from "../buy/UploadFile";
+import { useMoralis } from "react-moralis";
 const HomeContent = () => {
   const [showCart, setShowCart] = useState(false);
+  const { account: userAccount } = useMoralis();
   return (
     <div className={classes["home-content"]}>
       {showCart && (
@@ -50,6 +52,7 @@ const HomeContent = () => {
           <button
             className={styles.button}
             onClick={() => setShowCart(!showCart)}
+            disabled={!userAccount}
           >
             Upload File
           </button>

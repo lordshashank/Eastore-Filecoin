@@ -159,8 +159,13 @@
   align-self: center;
   font-weight: 600;
   color: #fff;
+  cursor: pointer;
 }
-
+.buy-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+  color: #000;
+}
 .input ul {
   display: flex;
   flex-direction: column;
