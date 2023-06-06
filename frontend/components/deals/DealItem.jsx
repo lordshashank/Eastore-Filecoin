@@ -17,7 +17,9 @@ const fileIcon = {
   default: AiFillFileExclamation,
 };
 
-const contractAddress = "0x375227c52b9145ca94216d6f323bdeb3f7e6b7a3";
+const contractAddress = "0x61Dc20D8caA9fC89F6D9af8CC2380c236e5A380b";
+// const contractAddress = "0xAC9939a63A0A7e7b19e423D62F18A49dBE20FC44";
+
 const DealItem = ({ deal }) => {
   const { account: userAccount } = useMoralis();
   const [loadingDeal, setLoadingDeal] = useState(false);

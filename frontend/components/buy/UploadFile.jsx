@@ -10,7 +10,10 @@ import { useWeb3Contract, useMoralis } from "react-moralis";
 
 // import { CID } from "cids";
 const CID = require("cids");
-const contractAddress = "0x61cc1d3A77c855689327626034d6B3aD2B511458";
+// const contractAddress = "0x61cc1d3A77c855689327626034d6B3aD2B511458";
+const contractAddress = "0x61Dc20D8caA9fC89F6D9af8CC2380c236e5A380b"; // calibnet
+// const contractAddress = "0xAC9939a63A0A7e7b19e423D62F18A49dBE20FC44";
+
 const contractABI = contract.abi;
 let cid;
 let dealParams;
@@ -203,7 +206,7 @@ const UploadFile = (props) => {
 
       cid = new CID(commP);
       setDealCid(cid);
-      const genesisDate = new Date("2023-01-13");
+      const genesisDate = new Date("2022-11-02");
       const genesisTime = genesisDate.getTime() / 1000;
       // console.log(genesisTime);
       const startDate = new Date(values.startTime);
@@ -215,6 +218,7 @@ const UploadFile = (props) => {
       const startEpoch = Math.floor((startTime - genesisTime) / 30) + 2000;
       const endEpoch = Math.floor((endTime - genesisTime) / 30) + 2000;
       // console.log(startEpoch, "to", endEpoch);
+      const verifiedDeal = true;
       const extraParamsV1 = [
         dealParams.carLink,
         dealParams.carSize, //carSize,
@@ -224,7 +228,7 @@ const UploadFile = (props) => {
       const DealRequestStruct = [
         cid.bytes, //cidHex
         dealParams.pieceSize, //taskArgs.pieceSize,
-        false, //taskArgs.verifiedDeal,
+        verifiedDeal, //taskArgs.verifiedDeal,
         commP, //taskArgs.label,
         // 520000, // startEpoch
         startEpoch, // startEpoch
@@ -265,7 +269,7 @@ const UploadFile = (props) => {
         startEpoch: startEpoch,
         endDate: values.endTime,
         endEpoch: endEpoch,
-        verifiedDeal: false,
+        verifiedDeal: verifiedDeal,
         keepUnsealedCopy: values.isChecked,
       };
       // console.log(deal);

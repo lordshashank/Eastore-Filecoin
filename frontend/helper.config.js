@@ -9,6 +9,16 @@ const networkConfig = {
     name: "Filecoin",
     currency: "tFIL",
   },
+  314159: {
+    id: "314159",
+    name: "Filecoin",
+    currency: "tFIL",
+  },
+  31415926: {
+    id: "31415926",
+    name: "Filecoin",
+    currency: "tFIL",
+  },
   5: {
     id: "5",
     name: "Ethereum",

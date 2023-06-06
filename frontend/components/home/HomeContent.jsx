@@ -22,15 +22,18 @@ const HomeContent = () => {
           you can try it out by uploading a file by clicking on button below.
           <br />
           <br />
-          Add hyperspace net to you metamask{" "}
+          Add calibration net to you metamask{" "}
           <a
-            href="https://chainlist.org/?search=hyperspace&testnets=true"
+            href="https://chainlist.org/?search=calibration&testnets=true"
             target="_blank"
           >
             here
           </a>
           <br /> Want some fil tokens?{" "}
-          <a href="https://hyperspace.yoga/#faucet" target="_blank">
+          <a
+            href="https://faucet.calibration.fildev.network/funds.html"
+            target="_blank"
+          >
             Click here
           </a>{" "}
           to get some.
