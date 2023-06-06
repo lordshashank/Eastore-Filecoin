@@ -34,13 +34,16 @@ export const checkPrice = async (fileName) => {
 
       response = await lighthouse.viewCarFiles(1, authToken.data.access_token);
       // console.log(response);
+      setTimeout(() => {
+        console.log("please wait file is getting uploaded");
+      }, 1000);
       fileParams = response.data.filter((item) => {
         return item.fileName === fileName[0];
       });
     }
 
     console.log("here");
-    // console.log(fileParams);
+    console.log(fileParams);
     const carLink = `https://data-depot.lighthouse.storage/api/download/download_car?fileId=${fileParams[0].id}.car`;
     const pieceData = {
       id: fileParams[0].id,
