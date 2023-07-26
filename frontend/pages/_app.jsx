@@ -10,7 +10,7 @@ const MyApp = ({ Component, pageProps }) => {
     <MoralisProvider initializeOnMount={false}>
       <NotificationProvider>
         <Head>
-          <title>StoreEasy</title>
+          <title>Eastore</title>
           <link rel="icon" type="image/png" src={logo} />
         </Head>
         {/* <Loader /> */}
