@@ -25,7 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3> <u>ETHForALL Winning Project<br> </u></h3>
+<h3> <u>FVM Microgrants<br> </u></h3>
   <a href="https://github.com/lordshashank/Eastore">
     <img src="./frontend/public/logo.png" alt="Logo" width="200" height="80">
   </a>
@@ -77,7 +77,7 @@
 
 Eastore, a decentralized storage marketplace and full-sector bounty rewarder. Bringing filecoin deals to your fingertips through Eastore. This is made using Filecoin Virtual machine and uses its miners to store and retrieve data, completely decentralized. You can view our project in depth at devfolio.
 
-Team - `surfer05` `lordshashank` `1010adigupta` `me-loser`
+Team - `lordshashank` `me-loser`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
