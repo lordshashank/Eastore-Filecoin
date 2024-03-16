@@ -281,9 +281,9 @@ const BuyNow = (props) => {
       const finalDealId = Number(result._hex);
       console.log(finalDealId);
       if (finalDealId !== undefined && finalDealId !== "0") {
-        // If your deal has already been submitted, you can get the deal ID by going to https://hyperspace.filfox.info/en/deal/<dealID>
+        // If your deal has already been submitted, you can get the deal ID by going to https://calibration.filfox.info/en/deal/<dealID>
         // The link will show up in the frontend: once a deal has been submitted, its deal ID stays constant. It will always have the same deal ID.
-        setDealID("https://hyperspace.filfox.info/en/deal/" + finalDealId);
+        setDealID("https://calibration.filfox.info/en/deal/" + finalDealId);
         if (userAccount && finalDealId) {
           try {
             const response = await fetch(

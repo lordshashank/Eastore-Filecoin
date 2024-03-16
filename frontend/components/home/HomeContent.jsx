@@ -20,7 +20,7 @@ const HomeContent = () => {
         <p>
           Eastore is a decentralized solution on Filecoin that stores your files
           directly to the Filecoin network using smart contracts completely
-          on-chain. This is a nominal version of Eastore in hyperspace testnet.
+          on-chain. This is a nominal version of Eastore in calibration testnet.
           you can try it out by uploading a file by clicking on button below.
           <br />
           <br />
