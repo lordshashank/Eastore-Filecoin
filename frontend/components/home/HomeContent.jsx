@@ -46,6 +46,12 @@ const HomeContent = () => {
             Note: This is a testnet version of the app. Please don't upload any
             important and private files here.{" "}
           </span>
+          <br />
+          <span className={classes["update-text"]}>
+            {" "}
+            Update: New version of Eastore is live on{" "}
+            <a href="www.eastore.xyz">eastore.xyz</a>.{" "}
+          </span>
         </p>
         <div style={{ display: "flex", gap: "1rem" }}>
           <ManualHeader buttonClassName={"button"} />
