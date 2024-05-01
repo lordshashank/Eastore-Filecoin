@@ -23,6 +23,9 @@
 [![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 <!-- PROJECT LOGO -->
+
+# This version is deprecated, check new one [here](https://github.com/Eastore-project)
+
 <br />
 <div align="center">
 <h3> <u>FVM Microgrants<br> </u></h3>
