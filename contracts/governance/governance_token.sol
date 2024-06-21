@@ -16,7 +16,7 @@ contract EAstoreToken is ERC20, ERC20Permit, ERC20Votes {
 
     // modifier
     modifier onlyMinter() {
-        require(msg.sender == minter, "BlocSocToken: only minter can mint");
+        require(msg.sender == minter, "only minter can mint");
         _;
     }
 
